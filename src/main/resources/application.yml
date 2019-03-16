@@ -1,0 +1,17 @@
+# mysql配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/question
+    username: chaungxin
+    password: jijin
+    driver-class-name: com.mysql.jdbc.Driver
+# 端口配置
+server:
+  port: 19316
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.ocean.pojo
+logging:
+  config: classpath:logback-spring.xml
+  path: E:/logs/
