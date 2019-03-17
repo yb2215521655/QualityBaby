@@ -15,4 +15,3 @@ mybatis:
 # 日志配置1
 logging:
   config: classpath:logback-spring.xml
-  level: com.swust.question.dao : debug
