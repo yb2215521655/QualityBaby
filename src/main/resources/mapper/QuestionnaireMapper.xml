@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swust.question.dao.QuestionnaireMapper" >
+  <resultMap id="BaseResultMap" type="com.swust.question.entity.Questionnaire" >
+    <id column="questionnaire_id" property="questionnaireId" jdbcType="INTEGER" />
+    <result column="questionnaire_title" property="questionnaireTitle" jdbcType="VARCHAR" />
+    <result column="questionnaire_introduction" property="questionnaireIntroduction" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    questionnaire_id, questionnaire_title, questionnaire_introduction
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from questionnaire
+    where questionnaire_id = #{questionnaireId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from questionnaire
+    where questionnaire_id = #{questionnaireId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.swust.question.entity.Questionnaire" >
+    insert into questionnaire (questionnaire_id, questionnaire_title, 
+      questionnaire_introduction)
+    values (#{questionnaireId,jdbcType=INTEGER}, #{questionnaireTitle,jdbcType=VARCHAR}, 
+      #{questionnaireIntroduction,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.swust.question.entity.Questionnaire" >
+    insert into questionnaire
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionnaireId != null" >
+        questionnaire_id,
+      </if>
+      <if test="questionnaireTitle != null" >
+        questionnaire_title,
+      </if>
+      <if test="questionnaireIntroduction != null" >
+        questionnaire_introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionnaireId != null" >
+        #{questionnaireId,jdbcType=INTEGER},
+      </if>
+      <if test="questionnaireTitle != null" >
+        #{questionnaireTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionnaireIntroduction != null" >
+        #{questionnaireIntroduction,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.swust.question.entity.Questionnaire" >
+    update questionnaire
+    <set >
+      <if test="questionnaireTitle != null" >
+        questionnaire_title = #{questionnaireTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionnaireIntroduction != null" >
+        questionnaire_introduction = #{questionnaireIntroduction,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where questionnaire_id = #{questionnaireId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.swust.question.entity.Questionnaire" >
+    update questionnaire
+    set questionnaire_title = #{questionnaireTitle,jdbcType=VARCHAR},
+      questionnaire_introduction = #{questionnaireIntroduction,jdbcType=VARCHAR}
+    where questionnaire_id = #{questionnaireId,jdbcType=INTEGER}
+  </update>
+</mapper>
