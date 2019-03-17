@@ -12,7 +12,7 @@ server:
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.ocean.pojo
-# 日志配置
+# 日志配置1
 logging:
   config: classpath:logback-spring.xml
   path: E:/logs/
