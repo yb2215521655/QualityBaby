@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swust.question.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.swust.question.entity.Comment" >
+    <id column="comment_id" property="commentId" jdbcType="INTEGER" />
+    <result column="comment_time" property="commentTime" jdbcType="TIMESTAMP" />
+    <result column="comment_like" property="commentLike" jdbcType="TINYINT" />
+    <result column="comment_sender" property="commentSender" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.swust.question.entity.Comment" extends="BaseResultMap" >
+    <result column="comment_detial" property="commentDetial" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment_id, comment_time, comment_like, comment_sender
+  </sql>
+  <sql id="Blob_Column_List" >
+    comment_detial
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.swust.question.entity.Comment" >
+    insert into comment (comment_id, comment_time, comment_like, 
+      comment_sender, comment_detial)
+    values (#{commentId,jdbcType=INTEGER}, #{commentTime,jdbcType=TIMESTAMP}, #{commentLike,jdbcType=TINYINT}, 
+      #{commentSender,jdbcType=INTEGER}, #{commentDetial,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.swust.question.entity.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="commentTime != null" >
+        comment_time,
+      </if>
+      <if test="commentLike != null" >
+        comment_like,
+      </if>
+      <if test="commentSender != null" >
+        comment_sender,
+      </if>
+      <if test="commentDetial != null" >
+        comment_detial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="commentTime != null" >
+        #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentLike != null" >
+        #{commentLike,jdbcType=TINYINT},
+      </if>
+      <if test="commentSender != null" >
+        #{commentSender,jdbcType=INTEGER},
+      </if>
+      <if test="commentDetial != null" >
+        #{commentDetial,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.swust.question.entity.Comment" >
+    update comment
+    <set >
+      <if test="commentTime != null" >
+        comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentLike != null" >
+        comment_like = #{commentLike,jdbcType=TINYINT},
+      </if>
+      <if test="commentSender != null" >
+        comment_sender = #{commentSender,jdbcType=INTEGER},
+      </if>
+      <if test="commentDetial != null" >
+        comment_detial = #{commentDetial,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.swust.question.entity.Comment" >
+    update comment
+    set comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      comment_like = #{commentLike,jdbcType=TINYINT},
+      comment_sender = #{commentSender,jdbcType=INTEGER},
+      comment_detial = #{commentDetial,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.swust.question.entity.Comment" >
+    update comment
+    set comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      comment_like = #{commentLike,jdbcType=TINYINT},
+      comment_sender = #{commentSender,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+</mapper>
