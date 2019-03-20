@@ -1,33 +1,26 @@
 package com.swust.question.entity;
 
-public class UserAndAspect {
-    private Integer id;
 
-    private Integer detialId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Integer openId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getId() {
-        return id;
-    }
+@Data
+@Entity
+@Table(name = "user_and_aspect")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class UserAndAspect  implements Serializable {
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
-    public Integer getDetialId() {
-        return detialId;
-    }
+	@Column(name = "aspect_id")
+	private Integer aspectId;
 
-    public void setDetialId(Integer detialId) {
-        this.detialId = detialId;
-    }
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public Integer getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
 }

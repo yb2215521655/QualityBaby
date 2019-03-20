@@ -1,33 +1,27 @@
 package com.swust.question.entity;
 
-public class Question {
-    private Integer questionId;
 
-    private String questionDetial;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Integer questionnaireId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getQuestionId() {
-        return questionId;
-    }
+@Data
+@Entity
+@Table(name = "question")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Question  implements Serializable {
 
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "question_id")
+	private Integer questionId;
 
-    public String getQuestionDetial() {
-        return questionDetial;
-    }
+	@Column(name = "question_detial")
+	private String questionDetial;
 
-    public void setQuestionDetial(String questionDetial) {
-        this.questionDetial = questionDetial == null ? null : questionDetial.trim();
-    }
+	@Column(name = "questionnaire_id")
+	private Integer questionnaireId;
 
-    public Integer getQuestionnaireId() {
-        return questionnaireId;
-    }
-
-    public void setQuestionnaireId(Integer questionnaireId) {
-        this.questionnaireId = questionnaireId;
-    }
 }

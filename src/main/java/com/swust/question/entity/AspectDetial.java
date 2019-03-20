@@ -1,33 +1,27 @@
 package com.swust.question.entity;
 
-public class AspectDetial {
-    private Integer detialId;
 
-    private String detialName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Byte aspectId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getDetialId() {
-        return detialId;
-    }
+@Data
+@Entity
+@Table(name = "aspect_detial")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class AspectDetial  implements Serializable {
 
-    public void setDetialId(Integer detialId) {
-        this.detialId = detialId;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "detial_id")
+	private Integer detialId;
 
-    public String getDetialName() {
-        return detialName;
-    }
+	@Column(name = "detiat_name")
+	private String detiatName;
 
-    public void setDetialName(String detialName) {
-        this.detialName = detialName == null ? null : detialName.trim();
-    }
+	@Column(name = "aspect_id")
+	private Integer aspectId;
 
-    public Byte getAspectId() {
-        return aspectId;
-    }
-
-    public void setAspectId(Byte aspectId) {
-        this.aspectId = aspectId;
-    }
 }

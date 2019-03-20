@@ -1,45 +1,29 @@
 package com.swust.question.entity;
 
-import java.util.Date;
 
-public class UserAndStudio {
-    private Integer id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Integer studioId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private Integer openId;
+@Data
+@Entity
+@Table(name = "user_and_studio")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class UserAndStudio  implements Serializable {
 
-    private Date joinTime;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
+	@Column(name = "join_time")
+	private java.util.Date joinTime;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@Column(name = "studio_id")
+	private Integer studioId;
 
-    public Integer getStudioId() {
-        return studioId;
-    }
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public void setStudioId(Integer studioId) {
-        this.studioId = studioId;
-    }
-
-    public Integer getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
-
-    public Date getJoinTime() {
-        return joinTime;
-    }
-
-    public void setJoinTime(Date joinTime) {
-        this.joinTime = joinTime;
-    }
 }

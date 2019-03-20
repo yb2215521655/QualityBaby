@@ -1,45 +1,29 @@
 package com.swust.question.entity;
 
-import java.util.Date;
 
-public class UserAndActivity {
-    private Integer id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Integer activityId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private Integer openId;
+@Data
+@Entity
+@Table(name = "user_and_activity")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class UserAndActivity  implements Serializable {
 
-    private Date joinTime;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
+	@Column(name = "join_time")
+	private java.util.Date joinTime;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@Column(name = "activity_id")
+	private Integer activityId;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    public Integer getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
-
-    public Date getJoinTime() {
-        return joinTime;
-    }
-
-    public void setJoinTime(Date joinTime) {
-        this.joinTime = joinTime;
-    }
 }

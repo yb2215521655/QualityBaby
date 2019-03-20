@@ -1,75 +1,39 @@
 package com.swust.question.entity;
 
-import java.util.Date;
 
-public class Activity {
-    private Integer activityId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private String activityName;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private String activityInformation;
+@Data
+@Entity
+@Table(name = "activity")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Activity  implements Serializable {
 
-    private Date activityStart;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "activity_id")
+	private Integer activityId;
 
-    private Date activityEnd;
+	@Column(name = "activity_name")
+	private String activityName;
 
-    private Byte activityPeopleNumber;
+	@Column(name = "activity_information")
+	private String activityInformation;
 
-    private Integer studioId;
+	@Column(name = "activity_start")
+	private java.util.Date activityStart;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
+	@Column(name = "activity_end")
+	private java.util.Date activityEnd;
 
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
+	@Column(name = "activity_people_number")
+	private Integer activityPeopleNumber;
 
-    public String getActivityName() {
-        return activityName;
-    }
+	@Column(name = "studio_id")
+	private Integer studioId;
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName == null ? null : activityName.trim();
-    }
-
-    public String getActivityInformation() {
-        return activityInformation;
-    }
-
-    public void setActivityInformation(String activityInformation) {
-        this.activityInformation = activityInformation == null ? null : activityInformation.trim();
-    }
-
-    public Date getActivityStart() {
-        return activityStart;
-    }
-
-    public void setActivityStart(Date activityStart) {
-        this.activityStart = activityStart;
-    }
-
-    public Date getActivityEnd() {
-        return activityEnd;
-    }
-
-    public void setActivityEnd(Date activityEnd) {
-        this.activityEnd = activityEnd;
-    }
-
-    public Byte getActivityPeopleNumber() {
-        return activityPeopleNumber;
-    }
-
-    public void setActivityPeopleNumber(Byte activityPeopleNumber) {
-        this.activityPeopleNumber = activityPeopleNumber;
-    }
-
-    public Integer getStudioId() {
-        return studioId;
-    }
-
-    public void setStudioId(Integer studioId) {
-        this.studioId = studioId;
-    }
 }
