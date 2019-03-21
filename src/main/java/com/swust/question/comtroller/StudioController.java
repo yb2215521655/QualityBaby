@@ -1,5 +1,7 @@
 package com.swust.question.comtroller;
 
+import com.swust.question.common.restful.ResponseJSON;
+import com.swust.question.common.restful.UnicomResponseEnums;
 import com.swust.question.dao.StudioDAO;
 import com.swust.question.entity.Studio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,10 @@ public class StudioController {
     @Autowired
     private StudioDAO studioDAO;
 
-    @RequestMapping(value = "/studio/{id}",method = RequestMethod.GET)
-    public Studio getStudioById(@PathVariable int id){
-        return studioDAO.findByStudioId(id);
+    @RequestMapping(value = "/studio/{id}", method = RequestMethod.GET)
+    public ResponseJSON<Studio> getStudioById(@PathVariable int id) {
+        return new ResponseJSON<Studio>(true,studioDAO.findByStudioId(id), UnicomResponseEnums.SUCCESS_OPTION);
     }
+
+
 }
