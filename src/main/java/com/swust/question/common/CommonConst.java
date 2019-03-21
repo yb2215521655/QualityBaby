@@ -3,6 +3,8 @@ package com.swust.question.common;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author pang
  * @version V1.0
@@ -16,10 +18,17 @@ public class CommonConst {
     /**
      * 微信接口基础url
      * */
-    @Value("${weixin.base-url}")
-    private static String baseURL;
+    public static String baseURL;
 
-    public static String getBaseURL() {
+    @Value("${weixin.base.url}")
+    private String tempURL;
+
+    @PostConstruct
+    public void getValue(){
+        baseURL=this.tempURL;
+    }
+
+    public String getBaseURL() {
         return baseURL;
     }
 }

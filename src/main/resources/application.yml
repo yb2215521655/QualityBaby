@@ -17,4 +17,5 @@ logging:
   config: classpath:logback-spring.xml
 # 常量配置
 weixin:
-  base-url: https://pangyuworld.cn/weixin
+  base:
+    url: https://pangyuworld.cn/weixin
