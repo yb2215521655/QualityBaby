@@ -1,33 +1,26 @@
 package com.swust.question.entity;
 
-public class UserAndTag {
-    private Integer id;
 
-    private Integer openId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Byte tagId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getId() {
-        return id;
-    }
+@Data
+@Entity
+@Table(name = "user_and_tag")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class UserAndTag  implements Serializable {
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
-    public Integer getOpenId() {
-        return openId;
-    }
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
+	@Column(name = "tag_id")
+	private Integer tagId;
 
-    public Byte getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(Byte tagId) {
-        this.tagId = tagId;
-    }
 }

@@ -1,6 +1,5 @@
 package com.swust.question;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
@@ -9,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author pang
  * @date 2019/3/16 21:20
  */
-@MapperScan("com.swust.question.dao")
 @SpringBootApplication
 public class QuestionApplication {
 

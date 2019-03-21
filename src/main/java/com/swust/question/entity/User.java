@@ -1,53 +1,36 @@
 package com.swust.question.entity;
 
-public class User {
-    private Integer openId;
 
-    private Integer tellNumber;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private String className;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private Boolean userGender;
+@Data
+@Entity
+@Table(name = "user")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class User  implements Serializable {
 
-    private Integer stuId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public Integer getOpenId() {
-        return openId;
-    }
+	@Column(name = "stu_id")
+	private Integer stuId;
 
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
+	@Column(name = "open_id")
+	private String openId;
 
-    public Integer getTellNumber() {
-        return tellNumber;
-    }
+	@Column(name = "tell_number")
+	private String tellNumber;
 
-    public void setTellNumber(Integer tellNumber) {
-        this.tellNumber = tellNumber;
-    }
+	@Column(name = "class_name")
+	private String className;
 
-    public String getClassName() {
-        return className;
-    }
+	@Column(name = "user_gender")
+	private Integer userGender;
 
-    public void setClassName(String className) {
-        this.className = className == null ? null : className.trim();
-    }
-
-    public Boolean getUserGender() {
-        return userGender;
-    }
-
-    public void setUserGender(Boolean userGender) {
-        this.userGender = userGender;
-    }
-
-    public Integer getStuId() {
-        return stuId;
-    }
-
-    public void setStuId(Integer stuId) {
-        this.stuId = stuId;
-    }
 }

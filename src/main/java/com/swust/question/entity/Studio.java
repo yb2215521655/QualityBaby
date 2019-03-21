@@ -1,33 +1,30 @@
 package com.swust.question.entity;
 
-public class Studio {
-    private Integer studioId;
 
-    private String studioTitle;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private String studioInformation;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getStudioId() {
-        return studioId;
-    }
+@Data
+@Entity
+@Table(name = "studio")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Studio  implements Serializable {
 
-    public void setStudioId(Integer studioId) {
-        this.studioId = studioId;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "studio_id")
+	private Integer studioId;
 
-    public String getStudioTitle() {
-        return studioTitle;
-    }
+	@Column(name = "studio_title")
+	private String studioTitle;
 
-    public void setStudioTitle(String studioTitle) {
-        this.studioTitle = studioTitle == null ? null : studioTitle.trim();
-    }
+	@Column(name = "studio_information")
+	private String studioInformation;
 
-    public String getStudioInformation() {
-        return studioInformation;
-    }
+	@Column(name = "studio_people_number")
+	private Integer studioPeopleNumber;
 
-    public void setStudioInformation(String studioInformation) {
-        this.studioInformation = studioInformation == null ? null : studioInformation.trim();
-    }
 }

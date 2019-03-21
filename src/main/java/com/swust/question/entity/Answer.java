@@ -1,33 +1,30 @@
 package com.swust.question.entity;
 
-public class Answer {
-    private Integer answerId;
 
-    private Integer openId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Integer optionId;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public Integer getAnswerId() {
-        return answerId;
-    }
+@Data
+@Entity
+@Table(name = "answer")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Answer  implements Serializable {
 
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "answer_id")
+	private Integer answerId;
 
-    public Integer getOpenId() {
-        return openId;
-    }
+	@Column(name = "answer_time")
+	private java.util.Date answerTime;
 
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
-    }
+	@Column(name = "option_id")
+	private Integer optionId;
 
-    public Integer getOptionId() {
-        return optionId;
-    }
+	@Column(name = "user_id")
+	private Integer userId;
 
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
-    }
 }
