@@ -24,7 +24,7 @@ public class Option  implements Serializable {
 	@Column(name = "option_order")
 	private Integer optionOrder;
 
-	@Column(name = "questionn_id")
+	@Column(name = "question_id")
 	private Integer questionnId;
 
 }

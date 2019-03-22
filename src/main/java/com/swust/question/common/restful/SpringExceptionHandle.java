@@ -1,12 +1,12 @@
 package com.swust.question.common.restful;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.ConnectException;
@@ -22,10 +22,13 @@ import java.sql.SQLException;
 @RestControllerAdvice(annotations={RestController.class})
 public class SpringExceptionHandle {
     private static final Logger logger = LoggerFactory.getLogger(SpringExceptionHandle.class);
+
     /**
-     * 请求参数类型错误异常的捕获
+     *  请求参数类型错误异常的捕获
+     * @author pang
+     * @date 2019/3/22
      * @param e
-     * @return
+     * @return com.swust.question.common.restful.ResponseJSON<java.lang.String>
      */
     @ExceptionHandler(value={BindException.class})
     @ResponseBody
@@ -36,9 +39,11 @@ public class SpringExceptionHandle {
     }
 
     /**
-     * 404错误异常的捕获
+     *  404错误异常的捕获
+     * @author pang
+     * @date 2019/3/22
      * @param e
-     * @return
+     * @return com.swust.question.common.restful.ResponseJSON<java.lang.String>
      */
     @ExceptionHandler(value={NoHandlerFoundException.class})
     @ResponseBody
@@ -48,25 +53,32 @@ public class SpringExceptionHandle {
         return new ResponseJSON<>(false,null, UnicomResponseEnums.NOT_FOUND);
     }
 
+
     /**
+     *
      * 自定义异常的捕获
      * 自定义抛出异常。统一的在这里捕获返回JSON格式的友好提示。
+     * @author pang
+     * @date 2019/3/22
      * @param exception
      * @param request
-     * @return
+     * @return com.swust.question.common.restful.ResponseJSON<T>
      */
     @ExceptionHandler(value={UnicomRuntimeException.class})
     @ResponseBody
     @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
     public <T> ResponseJSON<T> sendError(UnicomRuntimeException exception, HttpServletRequest request){
         String requestURI = request.getRequestURI();
-        logger.error("发生未知错误 url ={} ,message {}",requestURI,exception.getMsg());
+        logger.error("发生错误 url ={} ,message {}",requestURI,exception.getMsg());
         return new ResponseJSON<>(false,exception.getCode(),exception.getMsg());
     }
+
     /**
      * 数据库操作出现异常
+     * @author pang
+     * @date 2019/3/22
      * @param e
-     * @return
+     * @return com.swust.question.common.restful.ResponseJSON<java.lang.String>
      */
     @ExceptionHandler(value={SQLException.class, DataAccessException.class})
     @ResponseBody
@@ -75,10 +87,13 @@ public class SpringExceptionHandle {
         logger.error("数据库操作异常 ,message {}",e.getMessage());
         return new ResponseJSON<>(false, UnicomResponseEnums.DATABASE_ERROR);
     }
+
     /**
      * 网络连接失败！
+     * @author pang
+     * @date 2019/3/22
      * @param e
-     * @return
+     * @return com.swust.question.common.restful.ResponseJSON<java.lang.String>
      */
     @ExceptionHandler(value={ConnectException.class})
     @ResponseBody
@@ -88,11 +103,18 @@ public class SpringExceptionHandle {
         return new ResponseJSON<>(false, UnicomResponseEnums.CONNECTION_ERROR);
     }
 
-    @ExceptionHandler(value={Exception.class})
-    @ResponseBody
-    @ResponseStatus(value=HttpStatus.METHOD_NOT_ALLOWED)
-    public ResponseJSON<String> notAllowed(Exception e){
-        logger.error("occurs error when execute method ,message {}",e.getMessage());
-        return new ResponseJSON<>(false, UnicomResponseEnums.METHOD_NOT_ALLOWED);
-    }
+    /**
+     * 未知错误
+     * @author pang
+     * @date 2019/3/22
+     * @param e
+     * @return com.swust.question.common.restful.ResponseJSON<java.lang.String>
+     */
+    // @ExceptionHandler(value={Exception.class})
+    // @ResponseBody
+    // @ResponseStatus(value=HttpStatus.METHOD_NOT_ALLOWED)
+    // public ResponseJSON<String> notAllowed(Exception e){
+    //     logger.error("发生未知错误 ,message {}",e.getMessage());
+    //     return new ResponseJSON<>(false, UnicomResponseEnums.METHOD_NOT_ALLOWED);
+    // }
 }

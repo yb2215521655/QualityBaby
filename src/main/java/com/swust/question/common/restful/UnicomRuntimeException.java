@@ -9,11 +9,20 @@ package com.swust.question.common.restful;
  **/
 public class UnicomRuntimeException extends RuntimeException {
     private static final long serialVersionUID = 1L;
+    /**
+     * 返回码
+     */
     protected String code;
 
+    /**
+     * 返回的信息
+     */
     protected String msg;
 
-    protected String message;//打印出的日志信息
+    /**
+     * 打印的日志信息
+     */
+    protected String message;
 
     public UnicomRuntimeException(UnicomResponseEnums enums, String message) {
         super();
@@ -55,8 +64,6 @@ public class UnicomRuntimeException extends RuntimeException {
     public void setMessage(String message) {
         this.message = message;
     }
-
-
 
 
     public UnicomRuntimeException() {

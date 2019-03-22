@@ -9,9 +9,21 @@ package com.swust.question.common.restful;
  **/
 public class ResponseJSON<T> {
 
+    /**
+     * 是否成功
+     */
     private boolean success;
+    /**
+     * 返回的数据
+     */
     private T data;
+    /**
+     * 错误码
+     */
     private String errCode;
+    /**
+     * 错误说明
+     */
     private String errMsg;
 
     public ResponseJSON(){}
