@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 20/03/2019 23:55:55
+ Date: 22/03/2019 19:47:06
 */
 
 SET NAMES utf8mb4;
@@ -23,16 +23,26 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `activity`;
 CREATE TABLE `activity`  (
   `activity_id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `activity_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `activity_start` datetime NULL DEFAULT NULL,
-  `activity_end` datetime NULL DEFAULT NULL,
-  `activity_people_number` tinyint(4) NULL DEFAULT NULL,
+  `activity_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `activity_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `activity_start` datetime NOT NULL,
+  `activity_end` datetime NOT NULL,
+  `activity_people_number` tinyint(4) NOT NULL,
   `studio_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`activity_id`) USING BTREE,
   INDEX `Ref_13`(`studio_id`) USING BTREE,
   CONSTRAINT `Ref_13` FOREIGN KEY (`studio_id`) REFERENCES `studio` (`studio_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of activity
+-- ----------------------------
+INSERT INTO `activity` VALUES (1, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (2, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (3, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (4, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (5, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (6, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
 
 -- ----------------------------
 -- Table structure for answer
@@ -40,7 +50,7 @@ CREATE TABLE `activity`  (
 DROP TABLE IF EXISTS `answer`;
 CREATE TABLE `answer`  (
   `answer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `answer_time` datetime NULL DEFAULT NULL,
+  `answer_time` datetime NOT NULL,
   `option_id` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`answer_id`) USING BTREE,
@@ -56,7 +66,7 @@ CREATE TABLE `answer`  (
 DROP TABLE IF EXISTS `aspect`;
 CREATE TABLE `aspect`  (
   `aspect_id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `aspect_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aspect_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`aspect_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
@@ -66,7 +76,7 @@ CREATE TABLE `aspect`  (
 DROP TABLE IF EXISTS `aspect_detial`;
 CREATE TABLE `aspect_detial`  (
   `detial_id` int(11) NOT NULL AUTO_INCREMENT,
-  `detiat_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `detiat_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `aspect_id` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`detial_id`) USING BTREE,
   INDEX `Ref_04`(`aspect_id`) USING BTREE,
@@ -79,11 +89,11 @@ CREATE TABLE `aspect_detial`  (
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment`  (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `comment_time` datetime NULL DEFAULT NULL,
-  `comment_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `comment_time` datetime NOT NULL,
+  `comment_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `comment_like` int(11) NULL DEFAULT NULL,
   `user_id` int(11) NOT NULL DEFAULT 0,
-  `comment_sender` int(11) NULL DEFAULT NULL,
+  `comment_sender` int(11) NOT NULL,
   PRIMARY KEY (`comment_id`) USING BTREE,
   INDEX `Ref_01`(`user_id`) USING BTREE,
   CONSTRAINT `Ref_01` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -95,12 +105,12 @@ CREATE TABLE `comment`  (
 DROP TABLE IF EXISTS `option`;
 CREATE TABLE `option`  (
   `option_id` int(11) NOT NULL,
-  `option_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `option_order` tinyint(2) NULL DEFAULT NULL,
-  `questionn_id` int(11) NOT NULL DEFAULT 0,
+  `option_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `option_order` tinyint(2) NOT NULL,
+  `question_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`option_id`) USING BTREE,
-  INDEX `Ref_08`(`questionn_id`) USING BTREE,
-  CONSTRAINT `Ref_08` FOREIGN KEY (`questionn_id`) REFERENCES `question` (`questionn_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  INDEX `Ref_08`(`question_id`) USING BTREE,
+  CONSTRAINT `Ref_08` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -108,15 +118,14 @@ CREATE TABLE `option`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question`  (
-  `questionn_id` int(11) NOT NULL AUTO_INCREMENT,
-  `questionn_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `questionnaire_id` int(11) NOT NULL DEFAULT 0,
   `question_id` int(11) NOT NULL,
-  `question_detial` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`questionn_id`) USING BTREE,
+  `question_detial` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`question_id`) USING BTREE,
   INDEX `Ref_07`(`questionnaire_id`) USING BTREE,
+  INDEX `question_id`(`question_id`) USING BTREE,
   CONSTRAINT `Ref_07` FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaire` (`questionnaire_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for questionnaire
@@ -124,8 +133,8 @@ CREATE TABLE `question`  (
 DROP TABLE IF EXISTS `questionnaire`;
 CREATE TABLE `questionnaire`  (
   `questionnaire_id` int(11) NOT NULL AUTO_INCREMENT,
-  `questionnaire_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `questionnaire_instruction` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `questionnaire_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `questionnaire_instruction` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`questionnaire_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
@@ -135,11 +144,24 @@ CREATE TABLE `questionnaire`  (
 DROP TABLE IF EXISTS `studio`;
 CREATE TABLE `studio`  (
   `studio_id` int(11) NOT NULL AUTO_INCREMENT,
-  `studio_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `studio_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `studio_people_number` int(8) NULL DEFAULT NULL,
+  `studio_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `studio_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `studio_people_number` int(8) NOT NULL,
   PRIMARY KEY (`studio_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of studio
+-- ----------------------------
+INSERT INTO `studio` VALUES (1, '工作室标题', '工作室介绍', 26);
+INSERT INTO `studio` VALUES (3, '工作室标题2', '工作室介绍2', 100);
+INSERT INTO `studio` VALUES (4, '工作室标题2', '工作室介绍2', 100);
+INSERT INTO `studio` VALUES (5, '工作室标题2', '工作室介绍2', 100);
+INSERT INTO `studio` VALUES (6, '工作室标题', '工作室介绍', 26);
+INSERT INTO `studio` VALUES (7, '工作室标题', '工作室介绍', 0);
+INSERT INTO `studio` VALUES (8, '工作室标题', '工作室介绍', 26);
+INSERT INTO `studio` VALUES (9, '工作室标题', '工作室介绍', 26);
+INSERT INTO `studio` VALUES (10, '工作室标题', '工作室介绍', 26);
 
 -- ----------------------------
 -- Table structure for tag
@@ -147,7 +169,7 @@ CREATE TABLE `studio`  (
 DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag`  (
   `tag_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `tag_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`tag_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
