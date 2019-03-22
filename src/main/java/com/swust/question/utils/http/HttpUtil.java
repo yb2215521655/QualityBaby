@@ -34,7 +34,7 @@ public class HttpUtil {
      */
     @RequestMapping("getForEntity")
     public static <T> T getByHttp(Class<T> responseType, String url) throws HttpClientErrorException {
-        T result = (T) restTemplate.getForEntity(CommonConst.baseURL + url, responseType);
+        T result = (T) restTemplate.getForObject(CommonConst.baseURL + url, responseType);
         LOGGER.info("访问API , method = GET , url = " + url);
         return result;
     }
@@ -57,7 +57,7 @@ public class HttpUtil {
         for (String str : paramKey) {
             sb.append(str + "=" + params.get(str) + "&");
         }
-        T result = (T) restTemplate.getForEntity(CommonConst.baseURL + sb, responseType, params);
+        T result = (T) restTemplate.getForObject(CommonConst.baseURL + sb, responseType, params);
         LOGGER.info("访问API , method = GET , url = " + CommonConst.baseURL +url);
         return result;
     }
@@ -74,7 +74,7 @@ public class HttpUtil {
      */
     @RequestMapping("postForEntity")
     public static <T> T postByHttp(Class<T> responseType, String url, Object params) throws HttpClientErrorException {
-        T result = (T) restTemplate.postForEntity(CommonConst.baseURL + url, params, responseType);
+        T result = (T) restTemplate.postForObject(CommonConst.baseURL + url, params, responseType);
         LOGGER.info("访问API , method = POST , url = " + url+" , params = "+params);
         return result;
     }
