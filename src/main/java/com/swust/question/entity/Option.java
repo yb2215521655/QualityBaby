@@ -1,43 +1,30 @@
 package com.swust.question.entity;
 
-public class Option {
-    private Integer optionId;
 
-    private String optionDetial;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Byte optionOrder;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private Integer questionId;
+@Data
+@Entity
+@Table(name = "option")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Option  implements Serializable {
 
-    public Integer getOptionId() {
-        return optionId;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "option_id")
+	private Integer optionId;
 
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
-    }
+	@Column(name = "option_detial")
+	private String optionDetial;
 
-    public String getOptionDetial() {
-        return optionDetial;
-    }
+	@Column(name = "option_order")
+	private Integer optionOrder;
 
-    public void setOptionDetial(String optionDetial) {
-        this.optionDetial = optionDetial == null ? null : optionDetial.trim();
-    }
+	@Column(name = "question_id")
+	private Integer questionnId;
 
-    public Byte getOptionOrder() {
-        return optionOrder;
-    }
-
-    public void setOptionOrder(Byte optionOrder) {
-        this.optionOrder = optionOrder;
-    }
-
-    public Integer getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
 }

@@ -1,16 +1,17 @@
 package com.swust.question;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 /**
  * QuestionApplication
  *
  * @author pang
  * @date 2019/3/16 21:20
  */
-@MapperScan("com.swust.question.dao")
 @SpringBootApplication
+@EnableSwagger2
 public class QuestionApplication {
 
     public static void main(String[] args) {

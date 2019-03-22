@@ -1,33 +1,42 @@
 package com.swust.question.entity;
 
-public class Studio {
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
+@Data
+@Entity
+@ApiModel("工作室")
+@Table(name = "studio")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+public class Studio implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "studio_id")
+    @ApiModelProperty("工作室id")
     private Integer studioId;
 
+    @Column(name = "studio_title")
+    @ApiModelProperty("工作室名")
     private String studioTitle;
 
+    @Column(name = "studio_information")
+    @ApiModelProperty("工作室介绍")
     private String studioInformation;
 
-    public Integer getStudioId() {
-        return studioId;
-    }
+    @Column(name = "studio_people_number")
+    @ApiModelProperty("工作室最大参与人数")
+    private Integer studioPeopleNumber;
 
-    public void setStudioId(Integer studioId) {
-        this.studioId = studioId;
-    }
+    @ApiModelProperty(value = "工作室下面的活动",hidden = true)
+    @OneToMany(mappedBy = "studio", targetEntity = Activity.class, fetch = FetchType.EAGER)
+    private List<Activity> activityList;
 
-    public String getStudioTitle() {
-        return studioTitle;
-    }
-
-    public void setStudioTitle(String studioTitle) {
-        this.studioTitle = studioTitle == null ? null : studioTitle.trim();
-    }
-
-    public String getStudioInformation() {
-        return studioInformation;
-    }
-
-    public void setStudioInformation(String studioInformation) {
-        this.studioInformation = studioInformation == null ? null : studioInformation.trim();
-    }
 }

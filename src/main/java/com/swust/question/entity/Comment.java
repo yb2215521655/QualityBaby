@@ -1,55 +1,33 @@
 package com.swust.question.entity;
 
-import java.util.Date;
 
-public class Comment {
-    private Integer commentId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    private Date commentTime;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private Byte commentLike;
+@Data
+@Entity
+@Table(name = "comment")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Comment  implements Serializable {
 
-    private Integer commentSender;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "comment_id")
+	private Integer commentId;
 
-    private String commentDetial;
+	@Column(name = "comment_time")
+	private java.util.Date commentTime;
 
-    public Integer getCommentId() {
-        return commentId;
-    }
+	@Column(name = "comment_detial")
+	private String commentDetial;
 
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
-    }
+	@Column(name = "comment_like")
+	private Integer commentLike;
 
-    public Date getCommentTime() {
-        return commentTime;
-    }
+	@Column(name = "comment_sender")
+	private Integer commentSender;
 
-    public void setCommentTime(Date commentTime) {
-        this.commentTime = commentTime;
-    }
-
-    public Byte getCommentLike() {
-        return commentLike;
-    }
-
-    public void setCommentLike(Byte commentLike) {
-        this.commentLike = commentLike;
-    }
-
-    public Integer getCommentSender() {
-        return commentSender;
-    }
-
-    public void setCommentSender(Integer commentSender) {
-        this.commentSender = commentSender;
-    }
-
-    public String getCommentDetial() {
-        return commentDetial;
-    }
-
-    public void setCommentDetial(String commentDetial) {
-        this.commentDetial = commentDetial == null ? null : commentDetial.trim();
-    }
 }

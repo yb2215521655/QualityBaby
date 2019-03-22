@@ -1,75 +1,50 @@
 package com.swust.question.entity;
 
-import java.util.Date;
 
-public class Activity {
-    private Integer activityId;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-    private String activityName;
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private String activityInformation;
+@Data
+@Entity
+@ApiModel("活动")
+@Table(name = "activity")
+public class Activity  implements Serializable {
 
-    private Date activityStart;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "activity_id")
+    @ApiModelProperty("活动Id")
+	private Integer activityId;
 
-    private Date activityEnd;
+	@Column(name = "activity_name")
+    @ApiModelProperty("活动名")
+	private String activityName;
 
-    private Byte activityPeopleNumber;
+	@Column(name = "activity_information")
+    @ApiModelProperty("活动介绍")
+	private String activityInformation;
 
-    private Integer studioId;
+	@Column(name = "activity_start")
+    @ApiModelProperty("活动开始时间")
+	private java.util.Date activityStart;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
+	@Column(name = "activity_end")
+    @ApiModelProperty("活动结束时间")
+	private java.util.Date activityEnd;
 
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
+	@Column(name = "activity_people_number")
+    @ApiModelProperty("活动最大参与人数")
+	private Integer activityPeopleNumber;
 
-    public String getActivityName() {
-        return activityName;
-    }
+	@JoinColumn(name = "studio_id")
+	@ManyToOne
+    @JsonBackReference
+    @ApiModelProperty(value = "活动所属的工作室",hidden = true)
+	private Studio studio;
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName == null ? null : activityName.trim();
-    }
-
-    public String getActivityInformation() {
-        return activityInformation;
-    }
-
-    public void setActivityInformation(String activityInformation) {
-        this.activityInformation = activityInformation == null ? null : activityInformation.trim();
-    }
-
-    public Date getActivityStart() {
-        return activityStart;
-    }
-
-    public void setActivityStart(Date activityStart) {
-        this.activityStart = activityStart;
-    }
-
-    public Date getActivityEnd() {
-        return activityEnd;
-    }
-
-    public void setActivityEnd(Date activityEnd) {
-        this.activityEnd = activityEnd;
-    }
-
-    public Byte getActivityPeopleNumber() {
-        return activityPeopleNumber;
-    }
-
-    public void setActivityPeopleNumber(Byte activityPeopleNumber) {
-        this.activityPeopleNumber = activityPeopleNumber;
-    }
-
-    public Integer getStudioId() {
-        return studioId;
-    }
-
-    public void setStudioId(Integer studioId) {
-        this.studioId = studioId;
-    }
 }

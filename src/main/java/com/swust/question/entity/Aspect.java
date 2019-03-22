@@ -1,23 +1,24 @@
 package com.swust.question.entity;
 
-public class Aspect {
-    private Byte aspectId;
 
-    private String aspectName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-    public Byte getAspectId() {
-        return aspectId;
-    }
+import javax.persistence.*;
+import java.io.Serializable;
 
-    public void setAspectId(Byte aspectId) {
-        this.aspectId = aspectId;
-    }
+@Data
+@Entity
+@Table(name = "aspect")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class Aspect  implements Serializable {
 
-    public String getAspectName() {
-        return aspectName;
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "aspect_id")
+	private Integer aspectId;
 
-    public void setAspectName(String aspectName) {
-        this.aspectName = aspectName == null ? null : aspectName.trim();
-    }
+	@Column(name = "aspect_name")
+	private String aspectName;
+
 }
