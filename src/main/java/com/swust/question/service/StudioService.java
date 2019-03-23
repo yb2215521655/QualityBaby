@@ -1,7 +1,9 @@
 package com.swust.question.service;
 
 import com.swust.question.dao.StudioDAO;
+import com.swust.question.dao.UserAndStudioDAO;
 import com.swust.question.entity.Studio;
+import com.swust.question.entity.UserAndStudio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author pang
@@ -22,6 +25,8 @@ import java.util.List;
 public class StudioService {
     @Autowired
     private StudioDAO studioDAO;
+    @Autowired
+    private UserAndStudioDAO userAndStudioDAO;
 
     /**
      * 根据id获取工作室实体
@@ -102,7 +107,7 @@ public class StudioService {
      * @author pang
      * @date 2019/3/22
      */
-    public void deleteStudioById(int id) {
+    public void deleteStudio(int id) {
         studioDAO.deleteById(id);
     }
 
@@ -114,17 +119,15 @@ public class StudioService {
      * @author pang
      * @date 2019/3/22
      */
-    public void deleteStudioById(Studio studio) {
-        if (studio.getStudioId() == 0) {
-            try {
-                studioDAO.save(new Studio());
-            } catch (BindException e) {
-
-            } finally {
-                return;
-            }
-        }
-        studioDAO.delete(studio);
+    public void deleteStudio(Studio studio) {
+        studioDAO.deleteById(studio.getStudioId());
     }
 
+    public List<Studio> getStudioByUserId(int userId){
+        List<UserAndStudio> list=userAndStudioDAO.findAllByUser_UserId(userId);
+        List<Studio> studioList=list.stream()
+                .map(UserAndStudio::getStudio)
+                .collect(Collectors.toList());
+        return studioList;
+    }
 }

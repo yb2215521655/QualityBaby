@@ -9,12 +9,13 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @ApiModel("工作室")
 @Table(name = "studio")
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Studio implements Serializable {
 
     @Id
@@ -36,7 +37,8 @@ public class Studio implements Serializable {
     private Integer studioPeopleNumber;
 
     @ApiModelProperty(value = "工作室下面的活动",hidden = true)
-    @OneToMany(mappedBy = "studio", targetEntity = Activity.class, fetch = FetchType.EAGER)
-    private List<Activity> activityList;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @JoinColumn(name = "studio_id")
+    private Set<Activity> activityList;
 
 }

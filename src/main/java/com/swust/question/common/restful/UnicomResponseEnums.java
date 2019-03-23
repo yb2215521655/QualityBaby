@@ -39,9 +39,23 @@ public enum UnicomResponseEnums {
     ILLEGAL_ARGUMENT("024", "参数不合法"),
     ERROR_IDCODE("025", "验证码不正确");
 
+    /**
+     * 返回码
+     */
     private String code;
+    /**
+     * 说明
+     */
     private String msg;
 
+    /**
+     * 构造方法，生成返回码和返回说明
+     * @author pang
+     * @date 2019/3/23
+     * @param code
+     * @param msg
+     * @return
+     */
     private UnicomResponseEnums(String code, String msg) {
 
         this.code = code;
