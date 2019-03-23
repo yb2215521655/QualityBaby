@@ -1,7 +1,7 @@
 package com.swust.question.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Entity
 @ApiModel("活动")
 @Table(name = "activity")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Activity  implements Serializable {
 
 	@Id
@@ -41,10 +42,11 @@ public class Activity  implements Serializable {
     @ApiModelProperty("活动最大参与人数")
 	private Integer activityPeopleNumber;
 
-	@JoinColumn(name = "studio_id")
-	@ManyToOne
-    @JsonBackReference
-    @ApiModelProperty(value = "活动所属的工作室",hidden = true)
-	private Studio studio;
+	@Column(name = "studio_id")
+    @ApiModelProperty(value = "活动所属的工作室Id")
+	private Integer studioId;
 
+	@Transient
+	@ApiModelProperty("活动所属的工作室实体，需要手动进行查找")
+    private Studio studio;
 }

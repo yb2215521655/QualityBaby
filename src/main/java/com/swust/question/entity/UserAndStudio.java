@@ -20,10 +20,12 @@ public class UserAndStudio  implements Serializable {
 	@Column(name = "join_time")
 	private java.util.Date joinTime;
 
-	@Column(name = "studio_id")
-	private Integer studioId;
+	@JoinColumn(name = "studio_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Studio studio;
 
-	@Column(name = "user_id")
-	private Integer userId;
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private com.swust.question.entity.User user;
 
 }

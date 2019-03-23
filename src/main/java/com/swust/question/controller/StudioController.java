@@ -2,6 +2,7 @@ package com.swust.question.controller;
 
 import com.swust.question.common.restful.ResponseJSON;
 import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.entity.Activity;
 import com.swust.question.entity.Studio;
 import com.swust.question.service.StudioService;
 import io.swagger.annotations.*;
@@ -117,7 +118,7 @@ public class StudioController {
     })
     @RequestMapping(value = "/studio", method = RequestMethod.DELETE)
     public ResponseJSON delete(Studio studio) {
-        studioService.deleteStudioById(studio);
+        studioService.deleteStudio(studio);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 
@@ -133,8 +134,21 @@ public class StudioController {
     @ApiImplicitParam(name = "id", value = "工作室id", dataType = "int", paramType = "path", required = true)
     @RequestMapping(value = "/studio/{id}", method = RequestMethod.DELETE)
     public ResponseJSON delete(@PathVariable int id) {
-        studioService.deleteStudioById(id);
+        studioService.deleteStudio(id);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 
+    /**
+     * 查找用户所参加的工作室
+     * @author pang
+     * @date 2019/3/23
+     * @param id
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List<com.swust.question.entity.Activity>>
+     */
+    @ApiOperation("查找用户参加的工作室列表")
+    @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true)
+    @RequestMapping(value = "/studio/user/{id}", method = RequestMethod.GET)
+    public ResponseJSON<List<Studio>> getActivityByUserId(@PathVariable int id){
+        return new ResponseJSON<>(true,studioService.getStudioByUserId(id));
+    }
 }
