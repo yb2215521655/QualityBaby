@@ -19,3 +19,8 @@ logging:
 weixin:
   base:
     url: https://pangyuworld.cn/weixin
+springfox:
+  documentation:
+    swagger:
+      v2:
+        host: pangyuworld.cn/jj
