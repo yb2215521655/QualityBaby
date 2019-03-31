@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 22/03/2019 19:47:06
+ Date: 31/03/2019 19:00:32
 */
 
 SET NAMES utf8mb4;
@@ -27,22 +27,23 @@ CREATE TABLE `activity`  (
   `activity_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `activity_start` datetime NOT NULL,
   `activity_end` datetime NOT NULL,
-  `activity_people_number` tinyint(4) NOT NULL,
+  `activity_people_number` int(8) NOT NULL,
   `studio_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`activity_id`) USING BTREE,
   INDEX `Ref_13`(`studio_id`) USING BTREE,
   CONSTRAINT `Ref_13` FOREIGN KEY (`studio_id`) REFERENCES `studio` (`studio_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
-INSERT INTO `activity` VALUES (1, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
-INSERT INTO `activity` VALUES (2, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (1, 'XXX', 'CCC', '2011-12-02 10:50:25', '2011-12-02 10:50:25', 22, 6);
 INSERT INTO `activity` VALUES (3, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
 INSERT INTO `activity` VALUES (4, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
 INSERT INTO `activity` VALUES (5, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
 INSERT INTO `activity` VALUES (6, '活动1', '活动1介绍', '2019-03-22 12:37:00', '2019-03-22 12:37:03', 22, 1);
+INSERT INTO `activity` VALUES (7, '添加的新活动', '新活动没有介绍', '2011-12-02 10:50:25', '2011-12-02 10:50:25', 22, 1);
+INSERT INTO `activity` VALUES (9, 'xxx', 'aaa', '2011-12-02 10:50:25', '2011-12-02 10:50:25', 22, 3);
 
 -- ----------------------------
 -- Table structure for answer
@@ -56,7 +57,7 @@ CREATE TABLE `answer`  (
   PRIMARY KEY (`answer_id`) USING BTREE,
   INDEX `Ref_09`(`option_id`) USING BTREE,
   INDEX `Ref_10`(`user_id`) USING BTREE,
-  CONSTRAINT `Ref_09` FOREIGN KEY (`option_id`) REFERENCES `option` (`option_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Ref_09` FOREIGN KEY (`option_id`) REFERENCES `options` (`option_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Ref_10` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
@@ -100,10 +101,10 @@ CREATE TABLE `comment`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for option
+-- Table structure for options
 -- ----------------------------
-DROP TABLE IF EXISTS `option`;
-CREATE TABLE `option`  (
+DROP TABLE IF EXISTS `options`;
+CREATE TABLE `options`  (
   `option_id` int(11) NOT NULL,
   `option_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `option_order` tinyint(2) NOT NULL,
@@ -148,7 +149,7 @@ CREATE TABLE `studio`  (
   `studio_information` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `studio_people_number` int(8) NOT NULL,
   PRIMARY KEY (`studio_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of studio
@@ -162,6 +163,17 @@ INSERT INTO `studio` VALUES (7, '工作室标题', '工作室介绍', 0);
 INSERT INTO `studio` VALUES (8, '工作室标题', '工作室介绍', 26);
 INSERT INTO `studio` VALUES (9, '工作室标题', '工作室介绍', 26);
 INSERT INTO `studio` VALUES (10, '工作室标题', '工作室介绍', 26);
+
+-- ----------------------------
+-- Table structure for studio_activity_list
+-- ----------------------------
+DROP TABLE IF EXISTS `studio_activity_list`;
+CREATE TABLE `studio_activity_list`  (
+  `studio_studio_id` int(11) NOT NULL,
+  `activity_list_activity_id` int(11) NOT NULL,
+  UNIQUE INDEX `UK_2uueoqoa4nkjkd546p97uv5vc`(`activity_list_activity_id`) USING BTREE,
+  INDEX `FKbqbmc7a4y2ussegf4cu8apsc7`(`studio_studio_id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Table structure for tag
@@ -184,8 +196,14 @@ CREATE TABLE `user`  (
   `tell_number` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `class_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `user_gender` tinyint(1) NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+  PRIMARY KEY (`user_id`) USING BTREE,
+  CONSTRAINT `FK7k9gq173s19lgyq78e4bk53vu` FOREIGN KEY (`user_id`) REFERENCES `user_and_activity` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, 2147483647, 0x6F707862753533475A64426667644B66516351354459316744715F34, '15681910683', '物联1704', 1);
 
 -- ----------------------------
 -- Table structure for user_and_activity
@@ -201,7 +219,15 @@ CREATE TABLE `user_and_activity`  (
   INDEX `Ref_15`(`user_id`) USING BTREE,
   CONSTRAINT `Ref_14` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Ref_15` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user_and_activity
+-- ----------------------------
+INSERT INTO `user_and_activity` VALUES (1, '2019-03-23 16:33:15', 1, 1);
+INSERT INTO `user_and_activity` VALUES (2, '2019-03-23 16:33:15', 3, 1);
+INSERT INTO `user_and_activity` VALUES (3, '2019-03-23 16:33:15', 6, 1);
+INSERT INTO `user_and_activity` VALUES (4, '2019-03-23 16:33:15', 1, 1);
 
 -- ----------------------------
 -- Table structure for user_and_aspect
@@ -232,7 +258,19 @@ CREATE TABLE `user_and_studio`  (
   INDEX `Ref_12`(`user_id`) USING BTREE,
   CONSTRAINT `Ref_11` FOREIGN KEY (`studio_id`) REFERENCES `studio` (`studio_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Ref_12` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user_and_studio
+-- ----------------------------
+INSERT INTO `user_and_studio` VALUES (1, '2019-03-23 17:54:36', 1, 1);
+INSERT INTO `user_and_studio` VALUES (2, '2019-03-23 17:54:36', 3, 1);
+INSERT INTO `user_and_studio` VALUES (3, '2019-03-23 17:54:36', 4, 1);
+INSERT INTO `user_and_studio` VALUES (4, '2019-03-23 17:54:36', 5, 1);
+INSERT INTO `user_and_studio` VALUES (5, '2019-03-23 17:54:36', 8, 1);
+INSERT INTO `user_and_studio` VALUES (6, '2019-03-23 17:54:36', 7, 1);
+INSERT INTO `user_and_studio` VALUES (7, '2019-03-23 17:54:36', 9, 1);
+INSERT INTO `user_and_studio` VALUES (8, '2019-03-23 17:54:36', 10, 1);
 
 -- ----------------------------
 -- Table structure for user_and_tag

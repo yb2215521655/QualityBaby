@@ -20,10 +20,13 @@ public class UserAndActivity  implements Serializable {
 	@Column(name = "join_time")
 	private java.util.Date joinTime;
 
-	@Column(name = "activity_id")
-	private Integer activityId;
 
-	@Column(name = "user_id")
-	private Integer userId;
+	@JoinColumn(name = "activity_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Activity activity;
+
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private com.swust.question.entity.User user;
 
 }

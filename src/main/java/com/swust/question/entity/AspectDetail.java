@@ -9,17 +9,17 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "aspect_detial")
+@Table(name = "aspect_detail")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class AspectDetial  implements Serializable {
+public class AspectDetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "detial_id")
-	private Integer detialId;
+	@Column(name = "detail_id")
+	private Integer detailId;
 
-	@Column(name = "detiat_name")
-	private String detiatName;
+	@Column(name = "detail_name")
+	private String detailName;
 
 	@Column(name = "aspect_id")
 	private Integer aspectId;
