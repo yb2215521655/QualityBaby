@@ -21,9 +21,9 @@ public class Question  implements Serializable {
 	@ApiModelProperty("问题id")
 	private Integer questionId;
 
-	@Column(name = "question_detial")
+	@Column(name = "question_detail")
 	@ApiModelProperty("问题内容")
-	private String questionDetial;
+	private String questionDetail;
 
 	@Column(name = "questionnaire_id")
 	@ApiModelProperty("问题所属问卷id")
