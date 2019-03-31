@@ -1,6 +1,5 @@
 package com.swust.question.dao;
 
-import com.swust.question.entity.UserAndActivity;
 import com.swust.question.entity.UserAndStudio;
 import org.springframework.data.jpa.repository.JpaRepository;
 
