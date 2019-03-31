@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "option")
+@Table(name = "options")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Option  implements Serializable {
 

@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 23/03/2019 18:05:57
+ Date: 31/03/2019 19:00:32
 */
 
 SET NAMES utf8mb4;
@@ -57,7 +57,7 @@ CREATE TABLE `answer`  (
   PRIMARY KEY (`answer_id`) USING BTREE,
   INDEX `Ref_09`(`option_id`) USING BTREE,
   INDEX `Ref_10`(`user_id`) USING BTREE,
-  CONSTRAINT `Ref_09` FOREIGN KEY (`option_id`) REFERENCES `option` (`option_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Ref_09` FOREIGN KEY (`option_id`) REFERENCES `options` (`option_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Ref_10` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
@@ -101,10 +101,10 @@ CREATE TABLE `comment`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for option
+-- Table structure for options
 -- ----------------------------
-DROP TABLE IF EXISTS `option`;
-CREATE TABLE `option`  (
+DROP TABLE IF EXISTS `options`;
+CREATE TABLE `options`  (
   `option_id` int(11) NOT NULL,
   `option_detial` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `option_order` tinyint(2) NOT NULL,
