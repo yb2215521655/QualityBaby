@@ -20,9 +20,9 @@ public class Option  implements Serializable {
 	@ApiModelProperty("选项id")
 	private Integer optionId;
 
-	@Column(name = "option_detial")
+	@Column(name = "option_detail")
 	@ApiModelProperty("选项内容")
-	private String optionDetial;
+	private String optionDetail;
 
 	@Column(name = "option_order")
 	@ApiModelProperty("选项顺序")
