@@ -44,21 +44,6 @@ public class AnswerController {
         return new ResponseJSON<>(true, answerService.getAnswerById(id), UnicomResponseEnums.SUCCESS_OPTION);
     }
 
-    @ApiOperation(value = "查找所有答案（可分页）",notes = "分页从第0页开始计算")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query"),
-    })
-    @RequestMapping(value = "/answer", method = RequestMethod.GET)
-    public ResponseJSON<List<Answer>> getAllAnswer(HttpServletRequest request) {
-        int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
-        int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
-        if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, answerService.getAllAnswer(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
-        } else {
-            return new ResponseJSON<>(true, answerService.getAllAnswer(), UnicomResponseEnums.SUCCESS_OPTION);
-        }
-    }
 
     /**
 
@@ -87,8 +72,8 @@ public class AnswerController {
      */
     @ApiOperation("添加新的答案")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "answerId", value = "答案id", dataType = "int", paramType = "query", required = true),
-            //@ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "optionId", value = "选项id", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", paramType = "query", required = true),
     })
     @RequestMapping(value = "/answer", method = RequestMethod.POST)
     public ResponseJSON<Answer> addAnswer(Answer answer) {
@@ -108,7 +93,7 @@ public class AnswerController {
     @ApiOperation("根据答案实体删除答案")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "answerId", value = "答案id", dataType = "Integer", paramType = "query", required = true),
-            //@ApiImplicitParam(name = "questionnaireTitle", value = "问卷名", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "UserId", value = "用户id", dataType = "int", paramType = "query", required = true),
             //@ApiImplicitParam(name = "questionnaireInstruction", value = "问卷介绍", dataType = "String", paramType = "query", required = false)
     })
     @RequestMapping(value = "/answer", method = RequestMethod.DELETE)

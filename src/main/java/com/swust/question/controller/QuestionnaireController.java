@@ -118,6 +118,22 @@ public class QuestionnaireController {
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 
+    @ApiOperation(value = "查找所有问题（可分页）",notes = "分页从第0页开始计算")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query"),
+    })
+    @RequestMapping(value = "/question", method = RequestMethod.GET)
+    public ResponseJSON<List<Question>> getAllQuestion(HttpServletRequest request) {
+        int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
+        if (pageNumber > 0 && pageSize > 0) {
+            return new ResponseJSON<>(true, questionnaireService.getAllQuestion(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
+        } else {
+            return new ResponseJSON<>(true, questionnaireService.getAllQuestion(), UnicomResponseEnums.SUCCESS_OPTION);
+        }
+    }
+
     /**
      * 根据ID删除问题
      *
@@ -147,7 +163,7 @@ public class QuestionnaireController {
     @ApiOperation("添加新的问题")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "questionnaireId", value = "问卷id", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "questionDetial", value = "问题内容", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "questionDetail", value = "问题内容", dataType = "String", paramType = "query", required = true),
     })
     @RequestMapping(value = "/question", method = RequestMethod.POST)
     public ResponseJSON<Question> addQuestion(Question question) {
@@ -166,7 +182,7 @@ public class QuestionnaireController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "questionId", value = "问题id", dataType = "int", paramType = "query", required = true),
             //@ApiImplicitParam(name = "questionnaireTitle", value = "问卷名", dataType = "String", paramType = "query", required = false),
-            //@ApiImplicitParam(name = "questionDetial", value = "问题内容", dataType = "String", paramType = "query", required = false)
+            //@ApiImplicitParam(name = "questionDetail", value = "问题内容", dataType = "String", paramType = "query", required = false)
     })
     @RequestMapping(value = "/question", method = RequestMethod.PUT)
     public ResponseJSON<Question> editQuestion(Question question) {
@@ -194,41 +210,103 @@ public class QuestionnaireController {
     }
 
 
+    /**
+     * 根据ID删除选项
+     *
+     * @param id
+     * @return com.swust.question.common.restful.ResponseJSON
+     * @author phantaci
+     * @date 2019/3/31
+     */
+//    @ApiOperation("根据id删除选项")
+//    @ApiImplicitParam(name = "id", value = "选项id", dataType = "int", paramType = "path", required = true)
+//    @RequestMapping(value = "/option/{id}", method = RequestMethod.DELETE)
+//    public ResponseJSON delete(@PathVariable int id) {
+//        questionnaireService.deleteOptionById(id);
+//        return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
+//    }
 
 
 
     /**
-
-     * 根据问卷id查询里面含的问题
+     * 添加新的选项
+     *
+     * @param option 一个问卷对象
+     * @return com.swust.question.common.restful.ResponseJSON<com.swust.question.entity.Questionnaire>
      * @author phantaci
-     * @date 2019/3/25
-     * @param id
+     * @date 2019/3/23
      */
-
-    @ApiOperation("根据问卷id查询里面包含的问题")
-    @ApiImplicitParam(name = "id", value = "问卷id", dataType = "int", paramType = "path", required = true)
-    @RequestMapping(value = "/question/questionnaire/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Question>> getQuestionByQuestionnaireId(@PathVariable int id){
-
-        return new ResponseJSON<>(true,questionnaireService.getQuestionByQuestionnaireId(id));
-
+    @ApiOperation("添加新的选项")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "questionId", value = "问题id", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "optionDetail", value = "选项内容", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "optionOrder", value = "选项顺序", dataType = "int", paramType = "query", required = true),
+    })
+    @RequestMapping(value = "/option", method = RequestMethod.POST)
+    public ResponseJSON<Option> addOption(Option option) {
+        return new ResponseJSON<>(true, questionnaireService.addOption(option), UnicomResponseEnums.SUCCESS_OPTION);
     }
 
     /**
+     * 更新选项的内容
+     *
+     * @param option
+     * @return com.swust.question.common.restful.ResponseJSON<com.swust.question.entity.Questionnaire>
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    @ApiOperation("更新选项的内容")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "optionId", value = "选项id", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "optionOrder", value = "选项顺序", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "questionId", value = "问题id", dataType = "Integer", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "questionnaireTitle", value = "问卷名", dataType = "String", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "questionDetial", value = "问题内容", dataType = "String", paramType = "query", required = false)
+    })
+    @RequestMapping(value = "/option", method = RequestMethod.PUT)
+    public ResponseJSON<Option> editOption(Option option) {
+        return new ResponseJSON<>(true, questionnaireService.editOption(option), UnicomResponseEnums.SUCCESS_OPTION);
+    }
 
-     * 根据问题查询里面包含的选项
+    /**
+     * 根据选项实体删除对象。一定要有选项的id
+     *
+     * @param option
+     * @return com.swust.question.common.restful.ResponseJSON
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    @ApiOperation("根据选项实体删除对象")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "optionId", value = "选项id", dataType = "Integer", paramType = "query", required = true),
+
+            //@ApiImplicitParam(name = "questionnaireTitle", value = "问卷名", dataType = "String", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "questionnaireInstruction", value = "问卷介绍", dataType = "String", paramType = "query", required = false)
+    })
+    @RequestMapping(value = "/option", method = RequestMethod.DELETE)
+    public ResponseJSON delete(Option option) {
+        questionnaireService.deleteOptionById(option);
+        return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
+    }
+
+
+    /**
+
+     * 根据问题id查询里面含的选项
      * @author phantaci
      * @date 2019/3/25
      * @param id
      */
 
-//    @ApiOperation("根据问题id查询里面包含的选项")
-//    @ApiImplicitParam(name = "id", value = "问题id", dataType = "int", paramType = "path", required = true)
-//    @RequestMapping(value = "/option/question/{id}", method = RequestMethod.GET)
-//    public ResponseJSON<List<Option>> getOptionByQuestionId(@PathVariable int id){
-//
-//        return new ResponseJSON<>(true,questionnaireService.getOptionByQuestionId(id));
-//
-//    }
+    @ApiOperation("根据问题id查询里面包含的选项")
+    @ApiImplicitParam(name = "id", value = "问题id", dataType = "int", paramType = "path", required = true)
+    @RequestMapping(value = "/option/question/{id}", method = RequestMethod.GET)
+    public ResponseJSON<List<Option>> getOptionByQuestionId(@PathVariable int id){
+
+        return new ResponseJSON<>(true,questionnaireService.getOptionByQuestionId(id));
+
+    }
+
+
 
 }
