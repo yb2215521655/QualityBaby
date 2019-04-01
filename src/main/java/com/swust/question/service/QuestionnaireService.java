@@ -169,6 +169,29 @@ public class QuestionnaireService {
     }
 
     /**
+     * 获取所有问题的实体
+     *
+     * @param
+     * @return java.util.List<com.swust.question.entity.Question>
+     * @author phantaci
+     * @date 2019/3/31
+     */
+    public List<Question> getAllQuestion(){ return questionDAO.findAll();}
+
+    /**
+     * 分页获取所有问题实体
+     *
+     * @param pageNumber 页码
+     * @param pageSize   每页大小
+     * @return org.springframework.data.domain.Page<com.swust.question.entity.Questionn>
+     * @author phantaci
+     * @date 2019/3/31
+     */
+    public List<Question> getAllQuestion(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return questionDAO.findAll(pageable).getContent();
+    }
+    /**
      * 根据id删除问题
      *
      * @return com.swust.question.entity.Question
@@ -200,6 +223,70 @@ public class QuestionnaireService {
     }
 
 
+    /**
+     * 添加选项实体
+     *
+     * @param
+     * @return com.swust.question.entity.Question
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    public Option addOption(Option option) {
+        return optionDAO.save(option);
+    }
+
+    /**
+     * 修改选项实体
+     *
+     * @param option
+     * @return com.swust.question.entity.Questionnaire
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    public Option editOption(Option option) {
+        if (option.getOptionId() == 0) {
+            try {
+                optionDAO.save(new Option());
+            } catch (BindException e) {
+
+            } finally {
+                return null;
+            }
+        }
+        return optionDAO.saveAndFlush(option);
+    }
+
+    /**
+     * 根据id删除选项
+     *
+     * @return com.swust.question.entity.Question
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    public void deleteOptionById(int id){
+        optionDAO.deleteById(id);
+    }
+
+    /**
+     * 根据问卷实体删除问卷
+     *
+     * @return com.swust.question.entity.Question
+     * @author phantaci
+     * @date 2019/3/23
+     */
+    public void deleteOptionById(Option option){
+        if(option.getOptionId() == 0){
+            try{
+                optionDAO.save(new Option());
+            }catch (BindException e) {
+
+            } finally {
+                return;
+            }
+        }
+        optionDAO.delete(option);
+    }
+
 
     /**
      * 根据问卷id获取问题
@@ -220,9 +307,9 @@ public class QuestionnaireService {
      * @date 2019/3/26
      */
 
-//    public List<Option> getOptionByQuestionId(int questionId){
-//
-//        List<Option> optionList = optionDAO.findAllByQuestionId(questionId);
-//        return optionList;
-//    }
+    public List<Option> getOptionByQuestionId(int questionId){
+
+        List<Option> optionList = optionDAO.findAllByQuestionId(questionId);
+        return optionList;
+    }
 }
