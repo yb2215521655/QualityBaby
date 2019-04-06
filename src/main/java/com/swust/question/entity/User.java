@@ -31,6 +31,6 @@ public class User  implements Serializable {
 	private String className;
 
 	@Column(name = "user_gender")
-	private Integer userGender;
+	private Boolean userGender;
 
 }
