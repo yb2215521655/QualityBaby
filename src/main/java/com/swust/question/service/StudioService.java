@@ -123,6 +123,14 @@ public class StudioService {
         studioDAO.deleteById(studio.getStudioId());
     }
 
+    /**+
+     *
+      *
+      * @author pang
+      * @date 2019/3/26
+      * @param userId 用户ID
+      * @return
+      */
     public List<Studio> getStudioByUserId(int userId){
         List<UserAndStudio> list=userAndStudioDAO.findAllByUser_UserId(userId);
         List<Studio> studioList=list.stream()

@@ -44,7 +44,7 @@ public class Swagger2Config {
                         new AlternateTypeRule(typeResolver.resolve(Activity.class), typeResolver.resolve(Object.class)),
                         new AlternateTypeRule(typeResolver.resolve(Answer.class), typeResolver.resolve(Object.class)),
                         new AlternateTypeRule(typeResolver.resolve(Aspect.class), typeResolver.resolve(Object.class)),
-                        new AlternateTypeRule(typeResolver.resolve(AspectDetial.class), typeResolver.resolve(Object.class)),
+                        new AlternateTypeRule(typeResolver.resolve(AspectDetail.class), typeResolver.resolve(Object.class)),
                         new AlternateTypeRule(typeResolver.resolve(Comment.class), typeResolver.resolve(Object.class)),
                         new AlternateTypeRule(typeResolver.resolve(Option.class), typeResolver.resolve(Object.class)),
                         new AlternateTypeRule(typeResolver.resolve(Question.class), typeResolver.resolve(Object.class)),

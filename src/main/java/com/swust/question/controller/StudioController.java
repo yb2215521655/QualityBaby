@@ -2,7 +2,6 @@ package com.swust.question.controller;
 
 import com.swust.question.common.restful.ResponseJSON;
 import com.swust.question.common.restful.UnicomResponseEnums;
-import com.swust.question.entity.Activity;
 import com.swust.question.entity.Studio;
 import com.swust.question.service.StudioService;
 import io.swagger.annotations.*;
@@ -46,15 +45,23 @@ public class StudioController {
     }
 
 
-    @ApiOperation(value = "查找所有工作室（可分页）",notes = "分页从第0页开始计算")
+    /**
+     * 查找所有工作室，可分页
+     *
+     * @param request
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Studio>>
+     * @author pang
+     * @date 2019/3/26
+     */
+    @ApiOperation(value = "查找所有工作室（可分页）", notes = "分页从第0页开始计算")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query"),
     })
     @RequestMapping(value = "/studio", method = RequestMethod.GET)
     public ResponseJSON<List<Studio>> getAllStudio(HttpServletRequest request) {
-        int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
-        int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
         if (pageNumber > 0 && pageSize > 0) {
             return new ResponseJSON<>(true, studioService.getAllStudio(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
         } else {
@@ -140,15 +147,16 @@ public class StudioController {
 
     /**
      * 查找用户所参加的工作室
+     *
+     * @param id
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
      * @author pang
      * @date 2019/3/23
-     * @param id
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List<com.swust.question.entity.Activity>>
      */
     @ApiOperation("查找用户参加的工作室列表")
     @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true)
     @RequestMapping(value = "/studio/user/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Studio>> getActivityByUserId(@PathVariable int id){
-        return new ResponseJSON<>(true,studioService.getStudioByUserId(id));
+    public ResponseJSON<List<Studio>> getStudioByUserId(@PathVariable int id) {
+        return new ResponseJSON<>(true, studioService.getStudioByUserId(id));
     }
 }

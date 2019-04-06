@@ -21,8 +21,8 @@ public class Comment  implements Serializable {
 	@Column(name = "comment_time")
 	private java.util.Date commentTime;
 
-	@Column(name = "comment_detial")
-	private String commentDetial;
+	@Column(name = "comment_detail")
+	private String commentDetail;
 
 	@Column(name = "comment_like")
 	private Integer commentLike;

@@ -47,15 +47,23 @@ public class ActivityController {
     }
 
 
-    @ApiOperation(value = "查找所有活动（可分页）",notes = "分页从第0页开始计算")
+    /**
+     * 查找所有活动
+     *
+     * @param request
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
+     * @author pang
+     * @date 2019/3/26
+     */
+    @ApiOperation(value = "查找所有活动（可分页）", notes = "分页从第0页开始计算")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query"),
     })
     @RequestMapping(value = "/activity", method = RequestMethod.GET)
     public ResponseJSON<List<Activity>> getAllActivity(HttpServletRequest request) {
-        int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
-        int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
         if (pageNumber > 0 && pageSize > 0) {
             return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
         } else {
@@ -92,13 +100,6 @@ public class ActivityController {
      * @return com.swust.question.common.restful.ResponseJSON<com.swust.question.entity.Activity>
      * @author pang
      * @date 2019/3/22
-     */
-    /**
-     *
-     * @author pang
-     * @date 2019/3/23
-     * @param activity
-     * @return com.swust.question.common.restful.ResponseJSON<com.swust.question.entity.Activity>
      */
     @ApiOperation("更新活动的内容")
     @ApiImplicitParams({
@@ -156,15 +157,16 @@ public class ActivityController {
 
     /**
      * 查找用户所参加的活动
+     *
+     * @param id
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
      * @author pang
      * @date 2019/3/23
-     * @param id
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List<com.swust.question.entity.Activity>>
      */
     @ApiOperation("查找用户参加的活动列表")
     @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true)
     @RequestMapping(value = "/activity/user/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id){
-        return new ResponseJSON<>(true,activityService.getActivityByUserId(id));
+    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id) {
+        return new ResponseJSON<>(true, activityService.getActivityByUserId(id));
     }
 }
