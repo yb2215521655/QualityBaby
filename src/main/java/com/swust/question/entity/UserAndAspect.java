@@ -17,10 +17,12 @@ public class UserAndAspect  implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "aspect_id")
-	private Integer aspectId;
+	@JoinColumn(name = "aspect_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Aspect aspect;
 
-	@Column(name = "user_id")
-	private Integer userId;
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private com.swust.question.entity.User user;
 
 }
