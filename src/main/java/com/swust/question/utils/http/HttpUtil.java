@@ -58,25 +58,27 @@ public class HttpUtil {
             sb.append(str + "=" + params.get(str) + "&");
         }
         T result = (T) restTemplate.getForObject(CommonConst.baseURL + sb, responseType, params);
-        LOGGER.info("访问API , method = GET , url = " + CommonConst.baseURL +url);
+        LOGGER.info("访问API , method = GET , url = " + CommonConst.baseURL + url+" ,params : "+params);
         return result;
     }
 
 
     /**
-     *  通过post方式进行访问
+     * 通过post方式进行访问
+     *
+     * @param responseType 返回值类型
+     * @param url          目标网址
+     * @param params       参数
+     * @return T
      * @author pang
      * @date 2019/3/21
-     * @param responseType 返回值类型
-     * @param url 目标网址
-     * @param params 参数
-     * @return T
      */
     @RequestMapping("postForEntity")
     public static <T> T postByHttp(Class<T> responseType, String url, Object params) throws HttpClientErrorException {
         T result = (T) restTemplate.postForObject(CommonConst.baseURL + url, params, responseType);
-        LOGGER.info("访问API , method = POST , url = " + url+" , params = "+params);
+        LOGGER.info("访问API , method = POST , url = " + url + " , params = " + params);
         return result;
     }
+
 
 }
