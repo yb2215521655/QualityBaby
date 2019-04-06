@@ -1,3 +1,4 @@
+
 package com.swust.question.config;
 
 import com.fasterxml.classmate.TypeResolver;
@@ -88,3 +89,4 @@ public class Swagger2Config {
         return (AlternateTypeRule[]) list.toArray();
     }
 }
+

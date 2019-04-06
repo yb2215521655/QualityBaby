@@ -23,5 +23,5 @@ public interface OptionDAO extends JpaRepository<Option,Integer>, PagingAndSorti
      * @version V1.0
      * @date 2019/3/26 17：00
      */
-    List< Option> findAllByQuestionId(Integer questionId);
+    List<Option> findAllByQuestionId(Integer questionId);
 }
