@@ -26,6 +26,6 @@ public class UserAndStudio  implements Serializable {
 
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.EAGER)
-	private com.swust.question.entity.User user;
+	private User user;
 
 }
