@@ -15,6 +15,6 @@ import org.slf4j.LoggerFactory;
 public class LogTest {
     @Test
     public void logTest(){
-
+        System.out.println(new String(0.010D+"").substring(2,8));
     }
 }

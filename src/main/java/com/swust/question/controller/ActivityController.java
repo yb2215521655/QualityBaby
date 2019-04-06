@@ -170,3 +170,4 @@ public class ActivityController {
         return new ResponseJSON<>(true, activityService.getActivityByUserId(id));
     }
 }
+
