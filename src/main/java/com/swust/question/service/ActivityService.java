@@ -1,6 +1,8 @@
 package com.swust.question.service;
 
 import com.swust.question.common.restful.ResponseJSON;
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.ActivityDAO;
 import com.swust.question.dao.UserAndActivityDAO;
 import com.swust.question.entity.Activity;
@@ -89,13 +91,7 @@ public class ActivityService {
      */
     public Activity editActivity(Activity activity) {
         if (activity.getActivityId() == 0) {
-            try {
-                activityDao.save(new Activity());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return activityDao.saveAndFlush(activity);
     }
