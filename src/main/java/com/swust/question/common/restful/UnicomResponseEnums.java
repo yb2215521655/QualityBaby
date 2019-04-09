@@ -7,6 +7,7 @@ package com.swust.question.common.restful;
  * @create: 2019-03-21 18:16
  * @version: v1.0
  **/
+@SuppressWarnings("AlibabaEnumConstantsMustHaveComment")
 public enum UnicomResponseEnums {
     SYSTEM_ERROR("-001", "系统异常"),
     BAD_REQUEST("-002", "错误的请求参数"),
