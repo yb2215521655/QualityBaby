@@ -1,5 +1,8 @@
 package com.swust.question.common.restful;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @program: question
  * @description: 统一返回json格式
@@ -16,7 +19,7 @@ public class ResponseJSON<T> {
     /**
      * 返回的数据
      */
-    private T data;
+    private Map data=new HashMap();
     /**
      * 错误码
      */
@@ -31,7 +34,7 @@ public class ResponseJSON<T> {
     public ResponseJSON(boolean success, T data) {
         super();
         this.success = success;
-        this.data = data;
+        this.data.put("data",data);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class ResponseJSON<T> {
     public ResponseJSON(boolean success, T data, String errCode, String errMsg) {
         super();
         this.success = success;
-        this.data = data;
+        this.data.put("data",data);
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
@@ -64,7 +67,7 @@ public class ResponseJSON<T> {
     }
     public ResponseJSON(boolean success,T data,UnicomResponseEnums enums){
         this.success=success;
-        this.data=data;
+        this.data.put("data",data);
         this.errCode=enums.getCode();
         this.errMsg=enums.getMsg();
     }
@@ -74,11 +77,11 @@ public class ResponseJSON<T> {
     public void setSuccess(boolean success) {
         this.success = success;
     }
-    public T getData() {
+    public Map getData() {
         return data;
     }
     public void setData(T data) {
-        this.data = data;
+        this.data.put("data",data);
     }
     public String getErrCode() {
         return errCode;
@@ -92,5 +95,23 @@ public class ResponseJSON<T> {
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
     }
+    public ResponseJSON<T> setTotal(int total){
+        data.put("total",total);
+        return this;
+    }
 
+    public ResponseJSON<T> setTotalPage(int totalPage){
+        data.put("totalPage",totalPage);
+        return this;
+    }
+
+    public ResponseJSON<T> setPageNumber(int pageNumber){
+        data.put("pageNumber",pageNumber);
+        return this;
+    }
+
+    public ResponseJSON<T> setPageSize(int pageSize){
+        data.put("pageSize",pageSize);
+        return this;
+    }
 }
