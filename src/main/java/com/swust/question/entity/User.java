@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class User  implements Serializable {
+public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,6 +31,6 @@ public class User  implements Serializable {
 	private String className;
 
 	@Column(name = "user_gender")
-	private Integer userGender;
+	private Boolean userGender;
 
 }
