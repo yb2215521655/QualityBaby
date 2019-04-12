@@ -1,6 +1,7 @@
 package com.swust.question.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -37,7 +38,8 @@ public class Studio implements Serializable {
     private Integer studioPeopleNumber;
 
     @ApiModelProperty(value = "工作室下面的活动",hidden = true)
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    // @JsonIgnore
     @JoinColumn(name = "studio_id")
     private Set<Activity> activityList;
 

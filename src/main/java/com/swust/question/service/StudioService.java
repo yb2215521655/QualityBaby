@@ -7,7 +7,6 @@ import com.swust.question.dao.UserAndStudioDAO;
 import com.swust.question.entity.Studio;
 import com.swust.question.entity.UserAndStudio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class StudioService {
      * @date 2019/3/22
      */
     public List<Studio> getAllStudio(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         return studioDAO.findAll(pageable).getContent();
     }
 
@@ -90,7 +89,7 @@ public class StudioService {
      */
     public Studio editStudio(Studio studio) {
         if (studio.getStudioId() == 0) {
-            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT, "id不能为空");
         }
         return studioDAO.saveAndFlush(studio);
     }
@@ -120,8 +119,6 @@ public class StudioService {
     }
 
     /**
-     *
-     *
      * @param userId 用户ID
      * @return
      * @author pang
@@ -134,4 +131,49 @@ public class StudioService {
                 .collect(Collectors.toList());
         return studioList;
     }
+
+
+    /**
+     * 根据用户ID获取参加的工作室列表
+     *
+     * @param userId     用户id
+     * @param pageNumber 页码
+     * @param pageSize   大小
+     * @return java.util.List<com.swust.question.entity.Studio>
+     * @author pang
+     * @date 2019/4/12
+     */
+    public List<Studio> getStudioByUserId(int userId, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+        List<UserAndStudio> list = userAndStudioDAO.findAllByUser_UserId(userId, pageable).getContent();
+        List<Studio> studioList = list.stream()
+                .map(UserAndStudio::getStudio)
+                .collect(Collectors.toList());
+        return studioList;
+    }
+
+    /**
+     * 获得总数
+     *
+     * @param
+     * @return int
+     * @author pang
+     * @date 2019/4/12
+     */
+    public int getSumStudio() {
+        return (int) studioDAO.count();
+    }
+
+    /**
+     * 获得条件查询以后的总数
+     *
+     * @param userId 用户ID
+     * @return int
+     * @author pang
+     * @date 2019/4/12
+     */
+    public int getSumActivity(int userId) {
+        return (int) userAndStudioDAO.countByUser_UserId(userId);
+    }
+
 }

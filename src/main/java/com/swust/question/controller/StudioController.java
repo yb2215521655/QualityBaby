@@ -49,7 +49,7 @@ public class StudioController {
      * 查找所有工作室，可分页
      *
      * @param request
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Studio>>
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List               <               com.swust.question.entity.Studio>>
      * @author pang
      * @date 2019/3/26
      */
@@ -62,8 +62,13 @@ public class StudioController {
     public ResponseJSON<List<Studio>> getAllStudio(HttpServletRequest request) {
         int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total = studioService.getSumStudio();
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, studioService.getAllStudio(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
+            return new ResponseJSON<>(true, studioService.getAllStudio(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setTotalPage(total / pageSize)
+                    .setTotal(total)
+                    .setPageSize(pageSize)
+                    .setPageNumber(pageNumber);
         } else {
             return new ResponseJSON<>(true, studioService.getAllStudio(), UnicomResponseEnums.SUCCESS_OPTION);
         }
@@ -145,18 +150,35 @@ public class StudioController {
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 
+
     /**
      * 查找用户所参加的工作室
      *
      * @param id
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
+     * @param request
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List       <       com.swust.question.entity.Studio>>
      * @author pang
-     * @date 2019/3/23
+     * @date 2019/4/12
      */
     @ApiOperation("查找用户参加的工作室列表")
-    @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query")
+    })
     @RequestMapping(value = "/studio/user/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Studio>> getStudioByUserId(@PathVariable int id) {
-        return new ResponseJSON<>(true, studioService.getStudioByUserId(id));
+    public ResponseJSON<List<Studio>> getStudioByUserId(@PathVariable int id, HttpServletRequest request) {
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total = studioService.getSumActivity(id);
+        if (pageNumber > 0 && pageSize > 0) {
+            return new ResponseJSON<>(true, studioService.getAllStudio(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total / pageSize);
+        } else {
+            return new ResponseJSON<>(true, studioService.getStudioByUserId(id));
+        }
     }
 }

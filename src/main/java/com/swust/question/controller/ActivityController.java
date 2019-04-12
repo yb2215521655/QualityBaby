@@ -4,6 +4,7 @@ import com.swust.question.common.restful.ResponseJSON;
 import com.swust.question.common.restful.UnicomResponseEnums;
 import com.swust.question.entity.Activity;
 import com.swust.question.service.ActivityService;
+import com.swust.question.utils.token.Token;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -51,7 +52,7 @@ public class ActivityController {
      * 查找所有活动
      *
      * @param request
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List       <       com.swust.question.entity.Activity>>
      * @author pang
      * @date 2019/3/26
      */
@@ -64,13 +65,13 @@ public class ActivityController {
     public ResponseJSON<List<Activity>> getAllActivity(HttpServletRequest request) {
         int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
-        int total=activityService.getSumActivity();
+        int total = activityService.getSumActivity();
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber-1, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
                     .setPageNumber(pageNumber)
                     .setPageSize(pageSize)
                     .setTotal(total)
-                    .setTotalPage(total/pageSize);
+                    .setTotalPage(total / pageSize);
         } else {
             return new ResponseJSON<>(true, activityService.getAllActivity(), UnicomResponseEnums.SUCCESS_OPTION);
         }
@@ -164,7 +165,7 @@ public class ActivityController {
      * 查找用户所参加的活动
      *
      * @param id
-     * @return com.swust.question.common.restful.ResponseJSON<java.util.List   <   com.swust.question.entity.Activity>>
+     * @return com.swust.question.common.restful.ResponseJSON<java.util.List       <       com.swust.question.entity.Activity>>
      * @author pang
      * @date 2019/3/23
      */
@@ -175,16 +176,16 @@ public class ActivityController {
             @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query")
     })
     @RequestMapping(value = "/activity/user/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id,HttpServletRequest request) {
+    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id, HttpServletRequest request) {
         int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
-        int total=activityService.getSumActivity(id);
+        int total = activityService.getSumActivity(id);
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber-1, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
                     .setPageNumber(pageNumber)
                     .setPageSize(pageSize)
                     .setTotal(total)
-                    .setTotalPage(total/pageSize);
+                    .setTotalPage(total / pageSize);
         } else {
             return new ResponseJSON<>(true, activityService.getActivityByUserId(id));
         }
