@@ -34,9 +34,9 @@ public class Question  implements Serializable {
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	private Questionnaire questionnaire;
 
-//	@ApiModelProperty(value = "问题下面的选项",hidden = true)
-//	@JoinColumn(name = "question_id")
-//	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-//	private Set<Option> optionList;
+	@ApiModelProperty(value = "问题下面的选项",hidden = true)
+	@JoinColumn(name = "question_id")
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Option> optionList;
 
 }

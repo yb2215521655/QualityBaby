@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- * @Description:
- * @Author: yangbin
- * @Time: 2019/3/30 21:13
+ * @author phantaci
+ * @version V1.0
+ * @ClassName: AspectDAO
+ * @Package com.swust.question.dao
+ * @date 2019/4/1 20：04
  */
+public interface AspectDAO extends JpaRepository<Aspect,Integer>, PagingAndSortingRepository<Aspect,Integer> {
 
-public interface AspectDAO extends JpaRepository<Aspect, Integer>, PagingAndSortingRepository<Aspect, Integer> {
 }
