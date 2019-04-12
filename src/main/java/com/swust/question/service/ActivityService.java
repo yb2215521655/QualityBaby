@@ -1,12 +1,12 @@
 package com.swust.question.service;
 
-import com.swust.question.common.restful.ResponseJSON;
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.ActivityDAO;
 import com.swust.question.dao.UserAndActivityDAO;
 import com.swust.question.entity.Activity;
 import com.swust.question.entity.UserAndActivity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -89,13 +89,7 @@ public class ActivityService {
      */
     public Activity editActivity(Activity activity) {
         if (activity.getActivityId() == 0) {
-            try {
-                activityDao.save(new Activity());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return activityDao.saveAndFlush(activity);
     }
@@ -137,5 +131,45 @@ public class ActivityService {
                 .map(UserAndActivity::getActivity)
                 .collect(Collectors.toList());
         return activityList;
+    }
+
+    /**
+     *  根据用户ID获取活动列表，即查询用户参加的活动列表（分页）
+     * @author pang
+     * @date 2019/4/11
+     * @param userId 用户id
+     * @param pageNumber 页码
+     * @param pageSize 大小
+     * @return java.util.List<com.swust.question.entity.Activity>
+     */
+    public List<Activity> getActivityByUserId(int userId,int pageNumber,int pageSize){
+        Pageable pageable=PageRequest.of(pageNumber,pageSize);
+        List<UserAndActivity> list = userAndActivityDAO.findAllByActivity_ActivityId(userId,pageable).getContent();
+        List<Activity> activityList=list.stream()
+                .map(UserAndActivity::getActivity)
+                .collect(Collectors.toList());
+        return activityList;
+    }
+
+    /**
+     *  获得总数
+     * @author pang
+     * @date 2019/4/11
+     * @param
+     * @return int
+     */
+    public int getSumActivity(){
+        return (int) activityDao.count();
+    }
+
+    /**
+     *  获得条件查询以后的总数
+     * @author pang
+     * @date 2019/4/11
+     * @param userId
+     * @return int
+     */
+    public int getSumActivity(int userId){
+        return (int)userAndActivityDAO.countByUser_UserId(userId);
     }
 }

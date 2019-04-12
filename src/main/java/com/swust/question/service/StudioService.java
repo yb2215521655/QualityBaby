@@ -1,5 +1,7 @@
 package com.swust.question.service;
 
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.StudioDAO;
 import com.swust.question.dao.UserAndStudioDAO;
 import com.swust.question.entity.Studio;
@@ -88,13 +90,7 @@ public class StudioService {
      */
     public Studio editStudio(Studio studio) {
         if (studio.getStudioId() == 0) {
-            try {
-                studioDAO.save(new Studio());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return studioDAO.saveAndFlush(studio);
     }
@@ -123,17 +119,17 @@ public class StudioService {
         studioDAO.deleteById(studio.getStudioId());
     }
 
-    /**+
+    /**
      *
-      *
-      * @author pang
-      * @date 2019/3/26
-      * @param userId 用户ID
-      * @return
-      */
-    public List<Studio> getStudioByUserId(int userId){
-        List<UserAndStudio> list=userAndStudioDAO.findAllByUser_UserId(userId);
-        List<Studio> studioList=list.stream()
+     *
+     * @param userId 用户ID
+     * @return
+     * @author pang
+     * @date 2019/3/26
+     */
+    public List<Studio> getStudioByUserId(int userId) {
+        List<UserAndStudio> list = userAndStudioDAO.findAllByUser_UserId(userId);
+        List<Studio> studioList = list.stream()
                 .map(UserAndStudio::getStudio)
                 .collect(Collectors.toList());
         return studioList;

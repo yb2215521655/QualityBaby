@@ -17,10 +17,12 @@ public class UserAndTag  implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "user_id")
-	private Integer userId;
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private com.swust.question.entity.User user;
 
-	@Column(name = "tag_id")
-	private Integer tagId;
+	@JoinColumn(name = "tag_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Tag tag;
 
 }

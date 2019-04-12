@@ -64,8 +64,13 @@ public class ActivityController {
     public ResponseJSON<List<Activity>> getAllActivity(HttpServletRequest request) {
         int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total=activityService.getSumActivity();
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
+            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber-1, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total/pageSize);
         } else {
             return new ResponseJSON<>(true, activityService.getAllActivity(), UnicomResponseEnums.SUCCESS_OPTION);
         }
@@ -164,9 +169,25 @@ public class ActivityController {
      * @date 2019/3/23
      */
     @ApiOperation("查找用户参加的活动列表")
-    @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query")
+    })
     @RequestMapping(value = "/activity/user/{id}", method = RequestMethod.GET)
-    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id) {
-        return new ResponseJSON<>(true, activityService.getActivityByUserId(id));
+    public ResponseJSON<List<Activity>> getActivityByUserId(@PathVariable int id,HttpServletRequest request) {
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total=activityService.getSumActivity(id);
+        if (pageNumber > 0 && pageSize > 0) {
+            return new ResponseJSON<>(true, activityService.getAllActivity(pageNumber-1, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total/pageSize);
+        } else {
+            return new ResponseJSON<>(true, activityService.getActivityByUserId(id));
+        }
     }
 }
+
