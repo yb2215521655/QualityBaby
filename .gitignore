@@ -31,3 +31,4 @@ HELP.md
 
 ### 项目重要配置文件路径 ###
 /src/main/resources/
+/src/main/resources/application.yml
