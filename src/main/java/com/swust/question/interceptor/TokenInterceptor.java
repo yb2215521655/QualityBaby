@@ -1,9 +1,13 @@
-package com.swust.question.utils.token;
+package com.swust.question.interceptor;
 
 import com.swust.question.common.restful.UnicomResponseEnums;
 import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.entity.AdminUser;
 import com.swust.question.service.AdminService;
+import com.swust.question.utils.redis.RedisUtil;
+import com.swust.question.utils.token.PassToken;
+import com.swust.question.utils.token.Token;
+import com.swust.question.utils.token.TokenUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -58,6 +64,10 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             if (adminUser == null) {
                 // TODO 用户不存在
                 throw new UnicomRuntimeException(UnicomResponseEnums.NO_USER_EXIST, "用户不存在");
+            }
+            if (!redisUtil.get("token_"+username).toString().equals(tokenStr)){
+                // TODO 如果token和redis中的不相同，则为失效的token（单点登录？）
+                throw new UnicomRuntimeException(UnicomResponseEnums.LOGOUT_SUCCESS, "用户不存在");
             }
             // TODO token验证通过
             return true;

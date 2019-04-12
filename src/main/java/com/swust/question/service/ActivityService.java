@@ -63,7 +63,7 @@ public class ActivityService {
      * @date 2019/3/23
      */
     public List<Activity> getAllActivity(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         return activityDao.findAll(pageable).getContent();
     }
 
@@ -143,7 +143,7 @@ public class ActivityService {
      * @return java.util.List<com.swust.question.entity.Activity>
      */
     public List<Activity> getActivityByUserId(int userId,int pageNumber,int pageSize){
-        Pageable pageable=PageRequest.of(pageNumber,pageSize);
+        Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
         List<UserAndActivity> list = userAndActivityDAO.findAllByActivity_ActivityId(userId,pageable).getContent();
         List<Activity> activityList=list.stream()
                 .map(UserAndActivity::getActivity)

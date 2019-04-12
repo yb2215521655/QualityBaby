@@ -26,21 +26,25 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
     @ApiOperation("管理员登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "int", paramType = "query"),
     })
-    @RequestMapping(value = "/admin/login",method = RequestMethod.POST)
-    public ResponseJSON<String> login(String username,String password){
-        String result=adminService.login(username, password);
-        if (result==null){
+    @RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+    public ResponseJSON<String> login(String username, String password) {
+        String result = adminService.login(username, password);
+        if (result == null) {
             return new ResponseJSON<>(false, UnicomResponseEnums.NO_USER_EXIST);
-        }else if(result.equals("-1")){
-            return new ResponseJSON<>(false,UnicomResponseEnums.NOT_MATCH);
-        }else {
-            return new ResponseJSON<>(true,result,UnicomResponseEnums.LOGIN_SUCCESS);
+        } else if (result.equals("-1")) {
+            return new ResponseJSON<>(false, UnicomResponseEnums.NOT_MATCH);
+        } else {
+            return new ResponseJSON<>(true, result, UnicomResponseEnums.LOGIN_SUCCESS);
         }
+    }
+
+    @RequestMapping(value = "/admin/capatcha", method = RequestMethod.GET)
+    public String getVerificationCode() {
+        return adminService.getKaptcha();
     }
 }
