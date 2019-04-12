@@ -1,10 +1,10 @@
 package com.swust.question.service;
 
-import com.swust.question.dao.UserAndActivityDAO;
-import com.swust.question.dao.UserAndAspectDAO;
-import com.swust.question.dao.UserAndStudioDAO;
-import com.swust.question.dao.UserDAO;
+import com.swust.question.dao.*;
 import com.swust.question.entity.User;
+import com.swust.question.entity.UserAndActivity;
+import com.swust.question.entity.UserAndStudio;
+import com.swust.question.entity.UserAndTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description: 用户事务层
@@ -28,6 +29,10 @@ public class UserService {
     private UserAndStudioDAO userAndStudioDAO;
     @Autowired
     private UserAndActivityDAO userAndActivityDAO;
+    @Autowired
+    private UserAndTagDAO userAndTagDAO;
+    @Autowired
+    private CommentDAO commentDAO;
 
     /**
      * @description: 根据id获取用户实体
