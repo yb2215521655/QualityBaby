@@ -31,4 +31,10 @@ public class Comment  implements Serializable {
 	@Column(name = "comment_sender")
 	private Integer commentSender;
 
+	@Transient
+	private Comment comment;
+
+	@Transient
+	private User commentSenderUser;
+
 }
