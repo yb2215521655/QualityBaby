@@ -79,7 +79,7 @@ public class UserController {
             @ApiImplicitParam(name = "userGender", value = "性别", dataType = "Integer", paramType = "query", required = true),
             @ApiImplicitParam(name = "userName", value = "姓名", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/user/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseJSON<User> addUser(User user){
         return new ResponseJSON<>(true, userService.addUser(user), UnicomResponseEnums.SUCCESS_OPTION);
     }
@@ -101,7 +101,7 @@ public class UserController {
             @ApiImplicitParam(name = "userGender", value = "性别", dataType = "Integer", paramType = "query", required = true),
             @ApiImplicitParam(name = "userName", value = "姓名", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/user/edit", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public ResponseJSON<User> editUser(User user){
         return new ResponseJSON<>(true, userService.editUser(user), UnicomResponseEnums.SUCCESS_OPTION);
     }

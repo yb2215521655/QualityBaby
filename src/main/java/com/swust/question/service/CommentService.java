@@ -3,11 +3,11 @@ package com.swust.question.service;
 import com.swust.question.common.restful.UnicomResponseEnums;
 import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.CommentDAO;
+import com.swust.question.dao.UserAndCommentDAO;
 import com.swust.question.dao.UserDAO;
 import com.swust.question.entity.Comment;
-import com.swust.question.entity.UserAndTag;
+import com.swust.question.entity.UserAndComment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,8 @@ public class CommentService {
     private CommentDAO commentDAO;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private UserAndCommentDAO userAndCommentDAO;
 
     /**
      * @Description: 根据id获取用户留言
@@ -116,9 +118,9 @@ public class CommentService {
      * @Date: 2019/4/13 16:57
      */
     public List<Comment> getCommentByUserId(int userId){
-        List<Comment> list = commentDAO.findAllByUser_UserId(userId);
+        List<UserAndComment> list = userAndCommentDAO.findAllByUser_UserId(userId);
         List<Comment> commentList=list.stream()
-                .map(Comment::getComment)
+                .map(UserAndComment::getComment)
                 .collect(Collectors.toList());
         return commentList;
     }
@@ -131,9 +133,9 @@ public class CommentService {
      */
     public List<Comment> getTagByUserId(int userId,int pageNumber,int pageSize){
         Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
-        List<Comment> list = commentDAO.findAllByUser_UserId(userId,pageable).getContent();
+        List<UserAndComment> list = userAndCommentDAO.findAllByUser_UserId(userId,pageable).getContent();
         List<Comment> commentList=list.stream()
-                .map(Comment::getComment)
+                .map(UserAndComment::getComment)
                 .collect(Collectors.toList());
         return commentList;
     }
@@ -157,7 +159,7 @@ public class CommentService {
      * @Date: 2019/4/13 17:01
      */
     public int getSumComment(int userId){
-        return (int)commentDAO.countByUser_UserId(userId);
+        return (int)userAndCommentDAO.countByUser_UserId(userId);
     }
 
 }

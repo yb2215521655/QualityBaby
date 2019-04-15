@@ -31,7 +31,7 @@ public class UserService {
     @Autowired
     private UserAndTagDAO userAndTagDAO;
     @Autowired
-    private CommentDAO commentDAO;
+    private UserAndCommentDAO userAndCommentDAO;
 
     /**
      * @description: 根据id获取用户实体
@@ -185,9 +185,9 @@ public class UserService {
      * @Date: 2019/4/13 16:57
      */
     public List<User> getUserByCommentId(int commentId){
-        List<Comment> list = commentDAO.findAllByComment_CommentId(commentId);
+        List<UserAndComment> list = userAndCommentDAO.findAllByComment_CommentId(commentId);
         List<User> userList=list.stream()
-                .map(Comment::getCommentSenderUser)
+                .map(UserAndComment::getUser)
                 .collect(Collectors.toList());
         return userList;
     }
@@ -200,9 +200,9 @@ public class UserService {
      */
     public List<User> getUserByCommentId(int commentId,int pageNumber,int pageSize){
         Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
-        List<Comment> list = commentDAO.findAllByComment_CommentId(commentId,pageable).getContent();
+        List<UserAndComment> list = userAndCommentDAO.findAllByComment_CommentId(commentId,pageable).getContent();
         List<User> userList=list.stream()
-                .map(Comment::getCommentSenderUser)
+                .map(UserAndComment::getUser)
                 .collect(Collectors.toList());
         return userList;
     }
@@ -234,6 +234,6 @@ public class UserService {
     }
 
     public int getSumUserByComment(int commentId){
-        return (int)commentDAO.countByComment_CommentId(commentId);
+        return (int)userAndCommentDAO.countByComment_CommentId(commentId);
     }
 }

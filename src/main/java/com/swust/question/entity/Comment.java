@@ -3,6 +3,7 @@ package com.swust.question.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -30,11 +31,5 @@ public class Comment  implements Serializable {
 
 	@Column(name = "comment_sender")
 	private Integer commentSender;
-
-	@Transient
-	private Comment comment;
-
-	@Transient
-	private User commentSenderUser;
 
 }
