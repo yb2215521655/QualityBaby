@@ -2,6 +2,7 @@ package com.swust.question.controller;
 
 import com.swust.question.common.restful.ResponseJSON;
 import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.entity.Activity;
 import com.swust.question.entity.Tag;
 import com.swust.question.service.TagService;
 import io.swagger.annotations.*;
@@ -49,8 +50,13 @@ public class TagController {
     public ResponseJSON<List<Tag>> getAllTag(HttpServletRequest request) {
         int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
+        int total = tagService.getSumTag();
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, tagService.getAllTag(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
+            return new ResponseJSON<>(true, tagService.getAllTag(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total / pageSize);
         } else {
             return new ResponseJSON<>(true, tagService.getAllTag(), UnicomResponseEnums.SUCCESS_OPTION);
         }
@@ -67,7 +73,7 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tagName", value = "用户标签名", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/tag/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tag", method = RequestMethod.POST)
     public ResponseJSON<Tag> addTag(Tag tag){
         return new ResponseJSON<>(true, tagService.addTag(tag), UnicomResponseEnums.SUCCESS_OPTION);
     }
@@ -81,9 +87,10 @@ public class TagController {
      */
     @ApiOperation("更新用户标签信息")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "tagId", value = "用户标签id", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "tagName", value = "用户标签名", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/tag/edit", method = RequestMethod.PUT)
+    @RequestMapping(value = "/tag", method = RequestMethod.PUT)
     public ResponseJSON<Tag> editTag(Tag tag){
         return new ResponseJSON<>(true, tagService.editTag(tag), UnicomResponseEnums.SUCCESS_OPTION);
     }
@@ -97,10 +104,11 @@ public class TagController {
      */
     @ApiOperation("根据用户标签实体删除标签")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "tagId", value = "用户标签id", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "tagName", value = "用户标签名", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/tag/delete", method = RequestMethod.DELETE)
-    public ResponseJSON delete(Tag tag){
+    @RequestMapping(value = "/tag", method = RequestMethod.DELETE)
+    public ResponseJSON deleteTag(Tag tag){
         tagService.deleteTag(tag);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
@@ -114,9 +122,38 @@ public class TagController {
      */
     @ApiOperation("根据id删除标签")
     @ApiImplicitParam(name = "id", value = "用户标签id", dataType = "int", paramType = "path", required = true)
-    @RequestMapping(value = "/tag/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseJSON delete(@PathVariable int id){
+    @RequestMapping(value = "/tag/{id}", method = RequestMethod.DELETE)
+    public ResponseJSON deleteTag(@PathVariable int id){
         tagService.deleteTag(id);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
+    }
+
+    /**
+     * @Description: 查找用户标签列表
+     * @Param: 
+     * @Return: 
+     * @Author: yangbin
+     * @Date: 2019/4/13 17:06
+     */
+    @ApiOperation("查找用户标签列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "pageNumber", value = "页码", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页大小", required = false, dataType = "int", paramType = "query")
+    })
+    @RequestMapping(value = "/tag/user/{id}", method = RequestMethod.GET)
+    public ResponseJSON<List<Tag>> getTagByUserId(@PathVariable int id, HttpServletRequest request) {
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total = tagService.getSumTag(id);
+        if (pageNumber > 0 && pageSize > 0) {
+            return new ResponseJSON<>(true, tagService.getAllTag(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total / pageSize);
+        } else {
+            return new ResponseJSON<>(true, tagService.getTagByUserId(id));
+        }
     }
 }

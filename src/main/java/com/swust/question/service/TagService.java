@@ -1,9 +1,13 @@
 package com.swust.question.service;
 
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.TagDAO;
 import com.swust.question.dao.UserAndTagDAO;
 import com.swust.question.dao.UserDAO;
+import com.swust.question.entity.Activity;
 import com.swust.question.entity.Tag;
+import com.swust.question.entity.UserAndActivity;
 import com.swust.question.entity.UserAndTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindException;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 标签事务层
@@ -72,7 +77,7 @@ public class TagService {
     }
     
     /**
-     * @Description: 修改用户标签
+     * @Description: 修改用户标签，需要标签ID
      * @Param: 
      * @Return: 
      * @Author: yangbin
@@ -80,13 +85,7 @@ public class TagService {
      */
     public Tag editTag(Tag tag) {
         if (tag.getTagId() == 0) {
-            try {
-                tagDAO.save(new Tag());
-            } catch (BindException e) {
-
-            }finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return tagDAO.saveAndFlush(tag);
     }
@@ -111,5 +110,57 @@ public class TagService {
      */
     public void deleteTag(Tag tag) {
         tagDAO.deleteById(tag.getTagId());
+    }
+
+    /**
+     * @Description: 根据用户id获取用户标签列表
+     * @Param: 
+     * @Return: 
+     * @Author: yangbin
+     * @Date: 2019/4/13 16:57
+     */
+    public List<Tag> getTagByUserId(int userId){
+        List<UserAndTag> list = userAndTagDAO.findAllByUser_UserId(userId);
+        List<Tag> tagList=list.stream()
+                .map(UserAndTag::getTag)
+                .collect(Collectors.toList());
+        return tagList;
+    }
+    /**
+     * @Description: 根据用户id获取用户标签列表(分页)
+     * @Param:
+     * @Return:
+     * @Author: yangbin
+     * @Date: 2019/4/13 16:57
+     */
+    public List<Tag> getTagByUserId(int userId,int pageNumber,int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
+        List<UserAndTag> list = userAndTagDAO.findAllByUser_UserId(userId,pageable).getContent();
+        List<Tag> tagList=list.stream()
+                .map(UserAndTag::getTag)
+                .collect(Collectors.toList());
+        return tagList;
+    }
+
+    /**
+     * @Description: 获得总数
+     * @Param:
+     * @Return:
+     * @Author: yangbin
+     * @Date: 2019/4/13 17:00
+     */
+    public int getSumTag(){
+        return (int) tagDAO.count();
+    }
+
+    /**
+     * @Description: 获得条件查询以后的总数
+     * @Param:
+     * @Return:
+     * @Author: yangbin
+     * @Date: 2019/4/13 17:01
+     */
+    public int getSumTag(int userId){
+        return (int)userAndTagDAO.countByUser_UserId(userId);
     }
 }
