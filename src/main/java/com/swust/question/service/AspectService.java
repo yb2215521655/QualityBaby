@@ -1,9 +1,13 @@
 package com.swust.question.service;
 
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.AspectDAO;
 import com.swust.question.dao.AspectDetailDAO;
+import com.swust.question.dao.UserAndAspectDAO;
 import com.swust.question.entity.Aspect;
 import com.swust.question.entity.AspectDetail;
+import com.swust.question.entity.UserAndAspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +18,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author phantaci
@@ -29,6 +34,8 @@ public class AspectService {
     private AspectDAO aspectDAO;
     @Autowired
     private AspectDetailDAO aspectDetailDAO;
+    @Autowired
+    private UserAndAspectDAO userAndAspectDAO;
 
     /**
      * 根据id获取大维度实体
@@ -63,21 +70,21 @@ public class AspectService {
     public Aspect addAspect(Aspect aspect) {
         return aspectDAO.save(aspect);
     }
-//    public Aspect create() {
-//        Aspect aspect = new Aspect();
-//        aspect.setAspectId(1);
-//
-//        List<AspectDetail> detailList = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            AspectDetail aspectDetail = new AspectDetail();
-//            aspectDetail.setDetailId(1);
-//            //不用设置parentId哦
-//            detailList.add(aspectDetail);
-//        }
-//
-//        aspect.setDetailList(detailList);
-//        return aspectDAO.save(aspect);
-//    }
+
+
+    /**
+     * 分页获取所有大维度
+     *
+     * @param
+     * @return com.swust.question.entity.Aspect
+     * @author phantaci
+     * @date 2019/4/19
+     */
+    public List<Aspect> getAllAspect(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return aspectDAO.findAll(pageable).getContent();
+    }
+
 
     /**
      * 根据大维度实体删除大维度
@@ -100,6 +107,17 @@ public class AspectService {
     }
 
     /**
+     * 根据ID删除大维度
+     *
+     * @param aspectId 要删除的活动ID
+     * @return void
+     * @author phantaci
+     * @date 2019/4/20
+     */
+    public void deleteAspect(int aspectId) {
+        aspectDAO.deleteById(aspectId);
+    }
+    /**
      * 修改大维度实体
      *
      * @param aspect
@@ -109,17 +127,21 @@ public class AspectService {
      */
     public Aspect editAspect(Aspect aspect) {
         if (aspect.getAspectId() == 0) {
-            try {
-                aspectDAO.save(new Aspect());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return aspectDAO.saveAndFlush(aspect);
     }
 
+    /**
+     *  获得大维度总数
+     * @author phantaci
+     * @date 2019/4/19
+     * @param
+     * @return int
+     */
+    public int getSumAspect(){
+        return (int) aspectDAO.count();
+    }
 
     /**
      * 添加小维度实体
@@ -141,18 +163,14 @@ public class AspectService {
      * @author phantaci
      * @date 2019/3/23
      */
+
     public AspectDetail editAspectDetail(AspectDetail aspectDetail) {
         if (aspectDetail.getDetailId() == 0) {
-            try {
-                aspectDetailDAO.save(new AspectDetail());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return aspectDetailDAO.saveAndFlush(aspectDetail);
     }
+
 
     /**
      * 获取所有小维度的实体
@@ -162,7 +180,13 @@ public class AspectService {
      * @author phantaci
      * @date 2019/3/31
      */
-    public List<AspectDetail> getAllAspectDetail(){ return aspectDetailDAO.findAll();}
+   // public List<AspectDetail> getAllAspectDetail(){ return aspectDetailDAO.findAll();}
+
+    public List<AspectDetail> getAllAspectDetail(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return aspectDetailDAO.findAll(pageable).getContent();
+    }
+
 
 
     /**
@@ -197,6 +221,17 @@ public class AspectService {
     }
 
     /**
+     *  获得小维度总数
+     * @author phantaci
+     * @date 2019/4/19
+     * @param
+     * @return int
+     */
+    public int getSumAspectDetail(){
+        return (int) aspectDetailDAO.count();
+    }
+
+    /**
      * 根据大维度id获取小维度
      *
      * @author phantaci
@@ -208,15 +243,62 @@ public class AspectService {
         return aspectDetailList;
     }
 
-//    /**
-//     * 根据smallid获取big
-//     *
-//     * @author phantaci
-//     * @date 2019/4/1
-//     */
-//
-//    public List<AspectDetail> getAspectDetailByAspectId(int aspectId){
-//        List<AspectDetail> aspectDetailList = aspectDetailDAO.findAllByAspectId(aspectId);
-//        return aspectDetailList;
+    /**
+     * 根据用户ID获取雷达图列表，即查询用户参加的活动列表
+     * @author phantaci
+     * @date 2019/4/20
+     * @param userId 用户ID
+     * @return java.util.List<com.swust.question.entity.Activity>
+     */
+    public List<Aspect> getAspectByUserId(int userId){
+        List<UserAndAspect> list = userAndAspectDAO.findAllByAspect_AspectId(userId);
+        List<Aspect> aspectList=list.stream()
+                .map(UserAndAspect::getAspect)
+                .collect(Collectors.toList());
+        return aspectList;
+    }
+
+    /**
+     *  根据用户ID获取雷达图列表，即查询用户参加的活动列表（分页）
+     * @author phantaci
+     * @date 2019/4/20
+     * @param userId 用户id
+     * @param pageNumber 页码
+     * @param pageSize 大小
+     * @return java.util.List<com.swust.question.entity.Aspect>
+     */
+    public List<Aspect> getAspectByUserId(int userId,int pageNumber,int pageSize){
+        Pageable pageable=PageRequest.of(pageNumber,pageSize);
+        List<UserAndAspect> list = userAndAspectDAO.findAllByAspect_AspectId(userId,pageable).getContent();
+        List<Aspect> aspectList=list.stream()
+                .map(UserAndAspect::getAspect)
+                .collect(Collectors.toList());
+        return aspectList;
+    }
+
+
+
+
+    /**
+     *  获得条件查询以后的总数
+     * @author phantaci
+     * @date 2019/4/20
+     * @param userId
+     * @return int
+     */
+    public int getSumAspect(int userId){
+        return (int)userAndAspectDAO.countByUser_UserId(userId);
+    }
+
+    /**
+     *
+     * @author phantaci
+     * @date 2019/4/20
+     * @param aspectId
+     * @return int
+     */
+//    public int getSumAspectDetail(int aspectId){
+//        return (int)aspectDetailDAO.countByAspect_AspectId(aspectId);
 //    }
+
 }
