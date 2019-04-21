@@ -1,5 +1,7 @@
 package com.swust.question.service;
 
+import com.swust.question.common.restful.UnicomResponseEnums;
+import com.swust.question.common.restful.UnicomRuntimeException;
 import com.swust.question.dao.AnswerDAO;
 import com.swust.question.dao.OptionDAO;
 import com.swust.question.dao.QuestionDAO;
@@ -93,13 +95,7 @@ public class QuestionnaireService {
      */
     public Questionnaire editQuestionnaire(Questionnaire questionnaire) {
         if (questionnaire.getQuestionnaireId() == 0) {
-            try {
-                questionnaireDAO.save(new Questionnaire());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return questionnaireDAO.saveAndFlush(questionnaire);
     }
@@ -111,8 +107,8 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteQuestionnaireById(int id){
-        questionnaireDAO.deleteById(id);
+    public void deleteQuestionnaire(int questionnaireId){
+        questionnaireDAO.deleteByid(questionnaireId);
     }
 
     /**
@@ -122,18 +118,32 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteQuestionnaireById(Questionnaire questionnaire){
-        if(questionnaire.getQuestionnaireId() == 0){
-            try{
-                questionnaireDAO.save(new Questionnaire());
-            }catch (BindException e) {
+    public void deleteQuestionnaire(Questionnaire questionnaire){
 
-            } finally {
-                return;
-            }
-        }
-        questionnaireDAO.delete(questionnaire);
+        questionnaireDAO.deleteByid(questionnaire.getQuestionnaireId());
     }
+
+    /**
+     *  获得问卷总数
+     * @author phantaci
+     * @date 2019/4/120
+     * @param
+     * @return int
+     */
+    public int getSumQuestionnaire(){
+        return (int) questionnaireDAO.count();
+    }
+
+    /**
+     *  获得条件查询以后的总数
+     * @author phantaci
+     * @date 2019/4/20
+     * @param userId
+     * @return int
+     */
+//    public int getSumQuestionnaire(int userId){
+//        return (int)userAndActivityDAO.countByUser_UserId(userId);
+//    }
 
     /**
      * 添加问题实体
@@ -157,15 +167,10 @@ public class QuestionnaireService {
      */
     public Question editQuestion(Question question) {
         if (question.getQuestionId() == 0) {
-            try {
-                questionDAO.save(new Question());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return questionDAO.saveAndFlush(question);
+
     }
 
     /**
@@ -198,8 +203,8 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteQuestionById(int id){
-        questionDAO.deleteById(id);
+    public void deleteQuestion(int questionId){
+        questionDAO.deleteById(questionId);
     }
 
     /**
@@ -209,17 +214,9 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteQuestionById(Question question){
-        if(question.getQuestionId() == 0){
-            try{
-                questionDAO.save(new Question());
-            }catch (BindException e) {
+    public void deleteQuestion(Question question){
 
-            } finally {
-                return;
-            }
-        }
-        questionDAO.delete(question);
+        questionDAO.deleteById(question.getQuestionId());
     }
 
 
@@ -245,15 +242,10 @@ public class QuestionnaireService {
      */
     public Option editOption(Option option) {
         if (option.getOptionId() == 0) {
-            try {
-                optionDAO.save(new Option());
-            } catch (BindException e) {
-
-            } finally {
-                return null;
-            }
+            throw new UnicomRuntimeException(UnicomResponseEnums.ILLEGAL_ARGUMENT,"id不能为空");
         }
         return optionDAO.saveAndFlush(option);
+
     }
 
     /**
@@ -263,8 +255,8 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteOptionById(int id){
-        optionDAO.deleteById(id);
+    public void deleteOption(int optionId){
+        optionDAO.deleteById(optionId);
     }
 
     /**
@@ -274,17 +266,9 @@ public class QuestionnaireService {
      * @author phantaci
      * @date 2019/3/23
      */
-    public void deleteOptionById(Option option){
-        if(option.getOptionId() == 0){
-            try{
-                optionDAO.save(new Option());
-            }catch (BindException e) {
+    public void deleteOption(Option option){
 
-            } finally {
-                return;
-            }
-        }
-        optionDAO.delete(option);
+        optionDAO.deleteById(option.getOptionId());
     }
 
 
