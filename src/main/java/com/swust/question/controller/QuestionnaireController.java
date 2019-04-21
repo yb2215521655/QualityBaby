@@ -52,10 +52,16 @@ public class QuestionnaireController {
     })
     @RequestMapping(value = "/questionnaire", method = RequestMethod.GET)
     public ResponseJSON<List<Questionnaire>> getAllQuestionnaire(HttpServletRequest request) {
-        int pageNumber=request.getParameter("pageNumber")==null?0:Integer.parseInt(request.getParameter("pageNumber"));
-        int pageSize=request.getParameter("pageSize")==null?0:Integer.parseInt(request.getParameter("pageSize"));
+
+        int pageNumber = request.getParameter("pageNumber") == null ? 0 : Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = request.getParameter("pageSize") == null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
+        int total=questionnaireService.getSumQuestionnaire();
         if (pageNumber > 0 && pageSize > 0) {
-            return new ResponseJSON<>(true, questionnaireService.getAllQuestionnaire(pageNumber, pageSize), UnicomResponseEnums.SUCCESS_OPTION);
+            return new ResponseJSON<>(true, questionnaireService.getAllQuestionnaire(pageNumber-1, pageSize), UnicomResponseEnums.SUCCESS_OPTION)
+                    .setPageNumber(pageNumber)
+                    .setPageSize(pageSize)
+                    .setTotal(total)
+                    .setTotalPage(total/pageSize);
         } else {
             return new ResponseJSON<>(true, questionnaireService.getAllQuestionnaire(), UnicomResponseEnums.SUCCESS_OPTION);
         }
@@ -114,9 +120,28 @@ public class QuestionnaireController {
     })
     @RequestMapping(value = "/questionnaire", method = RequestMethod.DELETE)
     public ResponseJSON delete(Questionnaire questionnaire) {
-        questionnaireService.deleteQuestionnaireById(questionnaire);
+        questionnaireService.deleteQuestionnaire(questionnaire);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
+
+    /**
+     * 根据ID删除问卷
+     *
+     * @param id
+     * @return com.swust.question.common.restful.ResponseJSON
+     * @author phantaci
+     * @date 2019/4/20
+     */
+    @ApiOperation("根据id删除问卷")
+    @ApiImplicitParam(name = "id", value = "问卷id", dataType = "int", paramType = "path", required = true)
+    @RequestMapping(value = "/questionnaire/{id}", method = RequestMethod.DELETE)
+    public ResponseJSON delete(@PathVariable int id) {
+        questionnaireService.deleteQuestionnaire(id);
+        return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
+    }
+
+
+
 
     @ApiOperation(value = "查找所有问题（可分页）",notes = "分页从第0页开始计算")
     @ApiImplicitParams({
@@ -142,13 +167,13 @@ public class QuestionnaireController {
      * @author phantaci
      * @date 2019/3/31
      */
-    @ApiOperation("根据id删除问题")
-    @ApiImplicitParam(name = "id", value = "问题id", dataType = "int", paramType = "path", required = true)
-    @RequestMapping(value = "/question/{id}", method = RequestMethod.DELETE)
-    public ResponseJSON delete(@PathVariable int id) {
-        questionnaireService.deleteQuestionById(id);
-        return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
-    }
+//    @ApiOperation("根据id删除问题")
+//    @ApiImplicitParam(name = "id", value = "问题id", dataType = "int", paramType = "path", required = true)
+//    @RequestMapping(value = "/question/{id}", method = RequestMethod.DELETE)
+//    public ResponseJSON delete(@PathVariable int id) {
+//        questionnaireService.deleteQuestion(id);
+//        return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
+//    }
 
 
 
@@ -205,7 +230,7 @@ public class QuestionnaireController {
     })
     @RequestMapping(value = "/question", method = RequestMethod.DELETE)
     public ResponseJSON delete(Question question) {
-        questionnaireService.deleteQuestionById(question);
+        questionnaireService.deleteQuestion(question);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 
@@ -285,7 +310,7 @@ public class QuestionnaireController {
     })
     @RequestMapping(value = "/option", method = RequestMethod.DELETE)
     public ResponseJSON delete(Option option) {
-        questionnaireService.deleteOptionById(option);
+        questionnaireService.deleteOption(option);
         return new ResponseJSON(true, UnicomResponseEnums.SUCCESS_OPTION);
     }
 

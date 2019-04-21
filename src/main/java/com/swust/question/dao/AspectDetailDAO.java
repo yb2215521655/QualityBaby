@@ -23,4 +23,14 @@ public interface AspectDetailDAO extends JpaRepository<AspectDetail,Integer> , P
      * @date 2019/4/1 23：04
      */
     List<AspectDetail> findAllByAspectId(Integer aspectId);
+
+    /**
+     * 根据大维度ID查找小维度的数量
+     *
+     * @param aspectId 大维度ID
+     * @return java.lang.Long
+     * @author phantaci
+     * @date 2019/4/20
+     */
+    //long countByAspect_AspectId(Integer aspectId);
 }
